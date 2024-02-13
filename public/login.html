@@ -1,0 +1,136 @@
+<!--OBS - erstattet av SPA users-test.html-->
+
+
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- STATIC-->
+    <link rel="stylesheet" href="css/loginform.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <!-- FONTER-->
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@200;400&display=swap" rel="stylesheet">
+    <!--<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>-->
+    <title>Logg inn</title>
+<style>
+    body {
+        box-sizing: border-box;
+        /*background-color: #FDE767;*/
+        font-family: 'Josefin Sans', sans-serif;
+    }
+
+    a {
+      color: #f4f4f4;
+    }
+    #formContent {
+        -webkit-border-radius: 10px 10px 10px 10px;
+        border-radius: 10px 10px 10px 10px;
+        background: #662d91 !important;
+        color: #f4f4f4;
+            }
+    h2 {
+        color: #f4f4f4;
+    }
+    
+</style>
+</head>
+
+<body>
+
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+          <h2 class="active"> Logg inn </h2>
+          <h2 class="inactive underlineHover"><a href="registration.html">Registrer deg</a> </h2> <!--Må linke til registrering-->
+          <br>
+          <h1>Logg inn her!</h1> 
+      
+      
+          <!-- Login Form -->
+          <form>
+            <input type="text" id="login" class="fadeIn second" name="login" placeholder="Epost">
+            <input type="password" id="password" class="fadeIn third" name="login" placeholder="Passord">
+            <input type="submit" class="fadeIn fourth" value="Logg inn">
+          </form>
+      
+          <!--<div id="formFooter">
+            <a class="underlineHover" href="#">Forgot Password?</a>
+          </div>-->
+        <div id="error-message"></div>
+      
+        </div>
+      </div>
+      <div class="footer">
+        <div class="footertekst">Made with <3 av Siri Helene Wahl </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <!--<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>-->
+    
+    <script>
+    var firebaseConfig = {
+        apiKey: "AIzaSyBQdYPW-nMzPxGbCKtJ9mRNYLpv9uDcY_k",
+        authDomain: "testproject-43fdd.firebaseapp.com",
+        databaseURL: "https://testproject-43fdd-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "testproject-43fdd",
+        storageBucket: "testproject-43fdd.appspot.com",
+        messagingSenderId: "1059098419352",
+        appId: "1:1059098419352:web:e7d25fdb8e54da1a45b0ed",
+        measurementId: "G-WH8X3H8YHZ"
+        };
+
+firebase.initializeApp(firebaseConfig);
+
+document.querySelector('form').addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  const email = document.getElementById('login').value;
+  const password = document.getElementById('password').value;
+
+
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      var user = userCredential.user;
+
+      window.location.href = "verify.html"; 
+    })
+        .catch((error) => {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            var errorElement = document.getElementById('error-message');
+
+            if (errorCode === 'auth/wrong-password') {
+                errorElement.innerHTML = 'Wrong password.';
+            } else {
+                errorElement.innerHTML = errorMessage;
+            }
+
+                switch (errorCode) {
+                    case 'auth/invalid-email':
+                        errorElement.innerHTML = 'E-postadressen er ikke gyldig.';
+                        break;
+                    case 'auth/user-disabled':
+                        errorElement.innerHTML = 'Brukerkontoen har blitt deaktivert av en administrator.';
+                        break;
+                    case 'auth/user-not-found':
+                        errorElement.innerHTML = 'Det finnes ingen brukerpost som tilsvarer denne e-posten.';
+                        break;
+                    case 'auth/wrong-password':
+                        errorElement.innerHTML = 'Passordet er ugyldig for den gitte e-posten.';
+                        break;
+                    default:
+                        errorElement.innerHTML = errorMessage;
+                        break;
+                }
+            });
+});
+        
+    </script>
+
+
+</body>
+</html>

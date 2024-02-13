@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/loginform.css">
+    <link rel="stylesheet" href="css/footer.css">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@200;400&display=swap" rel="stylesheet">
+    <title>Innlogging</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Josefin Sans', sans-serif;
+        }
+        button {
+            background-color: #f4f4f4;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 10px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 12px;
+        }
+        .infoknapp {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+          <h2 id="login-tab" class="active"> Logg inn </h2>
+          <h2 id="register-tab" class="inactive underlineHover">Registrer deg</h2>
+          <br>
+          <h1 id="login-tekst">Logg inn her!</h1>
+          <h1 id="registration-tekst" style="display: none;">Registrer deg her!</h1>
+          <button id="info-knapp" style="display: none; justify-content: center; align-items: center;">Info</button>
+      
+          <form id="login-form">
+            <input type="text" id="login-email" class="fadeIn second" placeholder="Epost">
+            <input type="password" id="login-password" class="fadeIn third" placeholder="Passord">
+            <input type="submit" class="fadeIn fourth" value="Logg inn">
+          </form>
+      
+          <form id="register-form" style="display: none;">
+            <input type="text" id="fornavn" class="fadeIn third" placeholder="Fornavn">
+            <input type="text" id="etternavn" class="fadeIn third" placeholder="Etternavn">
+            <input type="text" id="register-email" class="fadeIn second" placeholder="Epost">
+            <input type="password" id="register-password" class="fadeIn third" placeholder="Passord">
+            <input type="submit" class="fadeIn fourth" value="Registrer">
+          </form>
+      
+          <div id="error-message"></div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+        var firebaseConfig = {
+            apiKey: "AIzaSyBQdYPW-nMzPxGbCKtJ9mRNYLpv9uDcY_k",
+            authDomain: "testproject-43fdd.firebaseapp.com",
+            databaseURL: "https://testproject-43fdd-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "testproject-43fdd",
+            storageBucket: "testproject-43fdd.appspot.com",
+            messagingSenderId: "1059098419352",
+            appId: "1:1059098419352:web:e7d25fdb8e54da1a45b0ed",
+            measurementId: "G-WH8X3H8YHZ"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
+
+        document.getElementById('login-tab').addEventListener('click', function() {
+            document.getElementById('login-form').style.display = 'block';
+            document.getElementById('login-tekst').style.display = 'block';
+            document.getElementById('info-knapp').style.display = 'none';
+            document.getElementById('registration-tekst').style.display = 'none';
+            document.getElementById('register-form').style.display = 'none';
+            this.className = 'active';
+            document.getElementById('register-tab').className = 'inactive underlineHover';
+        });
+
+        document.getElementById('register-tab').addEventListener('click', function() {
+            document.getElementById('login-form').style.display = 'none';
+            document.getElementById('login-tekst').style.display = 'none';
+            document.getElementById('info-knapp').style.display = 'inline-block';
+            document.getElementById('register-form').style.display = 'block';
+            document.getElementById('registration-tekst').style.display = 'block';
+            this.className = 'active';
+            document.getElementById('login-tab').className = 'inactive underlineHover';
+        });
+
+        
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            firebase.auth().signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                var user = userCredential.user;
+                window.location.href = "verify.html"; 
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                document.getElementById('error-message').innerHTML = errorMessage;
+            });
+        });
+
+        document.getElementById('register-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const fornavn = document.getElementById('fornavn').value;
+            const etternavn = document.getElementById('etternavn').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+
+                //verifikasjonsmail --> funker ikke
+                user.sendEmailVerification().then(() => {
+                    console.log('Verifikasjonsmail sendt!');
+                    let messageElement = document.getElementById('message');
+                        if (!messageElement) {
+                            messageElement = document.createElement('p');
+                            messageElement.id = 'message';
+                            document.body.appendChild(messageElement);
+                            }
+                        messageElement.textContent = 'Verifikasjonsmail sendt!';
+                    });
+
+                return db.collection("users").doc(user.uid).set({
+                    fornavn: fornavn,
+                    etternavn: etternavn,
+                    email: email
+                });
+            })
+            .then(() => {
+                window.location.href = "index.html"; 
+            })
+            .catch((error) => {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                document.getElementById('error-message').innerHTML = errorMessage;
+            });
+        });
+    </script>
+</body>
+</html>

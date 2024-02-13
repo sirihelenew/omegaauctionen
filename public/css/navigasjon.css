@@ -1,0 +1,162 @@
+.tabs {
+    list-style: none;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    background-color: #f4f4f4;
+  }
+
+  .icon-circle {
+    display: inline-block;
+    background-color: #f4f4f4; 
+    border-radius: 50%; 
+    padding: 10px; 
+}
+  
+  .tabs:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  
+  .tabs input[type=radio] {
+    display: none;
+  }
+  
+  .tabs label {
+    display: inline-block;
+    min-width: 25%;
+    flex: 1 1 25%;
+    color: #f4f4f4;
+    text-align: center;
+    cursor: pointer;
+    -webkit-transition: all 0.5s;
+    /* Safari 3.1 to 6.0 */
+    transition: all 0.5s;
+
+  }
+  
+  .tabs label span {
+    display: none;
+    font-size: 1rem;
+    padding-top: 5px;
+  }
+  
+  .tabs label:hover {
+    color: #483285;
+  }
+  .tabs label:hover .icon {
+    border-color: #483285;
+    background-position: 50px 0;
+    background-size: 100px 50px;
+  }
+  
+  .veldedighetsinformasjon {
+    display: none;
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+    margin-top: 2rem;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .veldedighetsinformasjon {
+    color: #333;
+    font-size: 25px;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .veldedighetsinformasjon * {
+    -webkit-animation: scale 0.2s ease-in-out;
+    -moz-animation: scale 0.2s ease-in-out;
+    animation: scale 0.2s ease-in-out;
+  }
+
+
+  .tab__content {
+    display: none;
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+    margin-top: 2rem;
+    font-family: 'Roboto', sans-serif;
+  }
+
+  .tab__content p {
+    color: #333;
+    font-size: 25px;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .tab__content * {
+    -webkit-animation: scale 0.2s ease-in-out;
+    -moz-animation: scale 0.2s ease-in-out;
+    animation: scale 0.2s ease-in-out;
+  }
+  
+  @keyframes scale {
+    0% {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.01);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  .tabs [id^=tab]:checked + label {
+    background: #EEEDED;
+    /*background: #E9A8F2;*/
+    color: #483285;
+  }
+  
+  .tabs [id^=tab]:checked + label i {
+    border-color: #483285;
+    background-position: 50px 0;
+    background-size: 100px 50px;
+  }
+    #tab1:checked ~ #tab__content--1,
+    #tab2:checked ~ #tab__content--2,
+    #tab3:checked ~ #tab__content--3,
+    #tab4:checked ~ #veldedighet {
+        display: block;
+    }
+
+  .tabs label i {
+    border-color: #483285; 
+    color: #483285; 
+}
+  
+  @media (min-width: 768px) {
+    .tabs label span {
+      display: block;
+    }
+    .tab__content {
+      width: 50%;
+    }
+  }
+  .icon {
+    margin-top: 1rem;
+    /*display: inline-block;*/
+    display: flex;
+    width: 54px;
+    height: 54px;
+    border-radius: 100%;
+    border: 2px solid #CACFD6;
+    background-size: 100px 50px;
+    box-sizing: border-box;
+    font-size: 35px;
+    /*text-align: center;
+    align-items: center;
+    justify-content: center;*/
+    line-height: 54px; 
+  }
+  
