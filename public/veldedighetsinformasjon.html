@@ -80,6 +80,45 @@
         font-style: normal;
         line-height: 1.8;
     }
+
+    @media (max-width: 600px) {
+        .section {
+            flex-direction: column;
+            margin-right: 0;
+        }
+        h1 {
+            font-size: 35px;
+            display: none;
+        }
+    
+
+        h2 {
+            font-size: 24px;
+            margin-left: 20px;
+            float: none;
+            margin-right: 20px !important;
+        }
+
+        img {
+            float: none;
+            width: 100%;
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .innhold {
+            float: none;
+            padding-left: 20px;
+        }
+
+        li {
+            font-size: 16px;
+            margin-left: 20px;
+        }
+        .responsive-hr {
+        display: none;
+        }
+    }
     
 </style>
 </head>
@@ -87,7 +126,7 @@
     <header>
         <h1>Veldedighetsinformasjon</h1>
     </header>
-    <hr>
+    <hr class="responsive-hr">
     <div class="section">
         <div class="image">
             <a href="https://helenkellerintl.org/"><img src="images/hki2-kopi.png" class="logo" style="margin-left: 5px; margin-right: 55px;"></a>
@@ -130,11 +169,6 @@
         </div>
     </div>
     <hr style="background-color: #f4f4f4;">
-    
-    
 
-    
-    
-    
 </body>
 </html>

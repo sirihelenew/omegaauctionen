@@ -12,6 +12,7 @@
     <!--.css filer-->
     <link rel="stylesheet" href="css/progressbar.css">
     <link rel="stylesheet" href="css/navigasjon.css">
+    <link rel="stylesheet" href="css/logos.css">
     <!--<link rel="stylesheet" href="css/footer.css">-->
     <!--Ikoner-->
     <script src="https://kit.fontawesome.com/c110f170bd.js" crossorigin="anonymous"></script>
@@ -45,6 +46,10 @@
         div {
             background-color: #f4f4f4;
         }
+        main{
+            background-color: #f4f4f4;
+        }
+        
 
       #header {    
             box-shadow: 0px 0px 1px 0px rgba(170,170,170,1) !important;
@@ -415,7 +420,7 @@
               <p><i class="fa-solid fa-star"></i>Årets veldedige organisasjon er <strong>Helen Keller International</strong></p>
               <p><i class="fa-solid fa-star"></i>Valget er basert på <strong>GiveWell</strong> sin toppliste over effektive veldedighetsorganisasjoner</p>
               <p><i class="fa-solid fa-star"></i>Vi samarbeider med <strong>Gi Effektivt</strong>, som sørger for at 100% av innsamlet sum går direkte til HKI</p>
-              <button class="header-button" style="background-color: #A6D1E6;"><a href="#" style="color: #333;">LES MER HER!</a></button>
+              <button class="header-button" style="background-color: #A6D1E6;"><a href="veldedighetsinformasjon.html" style="color: #333;">LES MER HER!</a></button>
           </div>
       </div>
   </div>
@@ -423,6 +428,53 @@
 
 <main>
   <h1>Årets sponsorer</h1>
+  <ul class="bedrifter">
+    <li class="bedrifter__obj">
+      <a href="https://www.festningen.no/">
+        <img src="images/festningen.png" alt="" style="width: 200px;"/>
+      </a>
+    </li>
+    <li class="bedrifter__obj">
+        <a href="https://www.barmuda.no/">
+          <img src="images/barmuda.png" alt="" />
+        </a>
+      </li>
+      <li class="bedrifter__obj">
+        <a href="https://downtown.no/">
+          <img src="images/dt.png" alt="" />
+        </a>
+      </li>
+      <li class="bedrifter__obj">
+        <a href="https://www.akademika.no/">
+          <img src="images/akademika.svg" alt="" />
+        </a>
+      </li>
+      <li class="bedrifter__obj">
+        <a href="https://escapehunt.com/no/trondheim/?gad_source=1&gclid=CjwKCAiAuNGuBhAkEiwAGId4atj-NF5Q1sa9dKq8DlOiSF0_8Z8akKCxZ-CqijEGa4uxwaosC-tMmhoChs8QAvD_BwE">
+          <img src="images/escapehunt.png" alt=""/>
+        </a>
+      </li>
+      <li class="bedrifter__obj">
+          <a href="https://sirkusshopping.no/">
+            <img src="images/sirkus.png" alt="" />
+          </a>
+        </li>
+        <li class="bedrifter__obj">
+          <a href="https://www.sansebastian.no/">
+            <img src="images/sansebastian.png" alt="" />
+          </a>
+        </li>
+        <li class="bedrifter__obj">
+          <a href="https://xn--frisrn-eya.no/">
+            <img src="images/frisor.svg" alt="" />
+          </a>
+        </li>
+        <li class="bedrifter__obj">
+            <a href="https://www.bunnpris.no/">
+              <img src="images/bunnpris.svg" alt="" />
+            </a>
+          </li>
+  </ul>
 </main>
 <!-------------------------------------------------------------------------------->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
