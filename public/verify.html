@@ -473,6 +473,9 @@ function showContent(activeTabId, user) {
 }
 
 function showContent_Tab4(activeTabId) {
+    document.querySelectorAll('.tab__content').forEach(function(content) {
+        content.style.display = 'none';
+    });
     document.getElementById('login-message').style.display = 'none';
     var content = document.querySelector('.veldedighetsinformasjon');
     if (content) {
