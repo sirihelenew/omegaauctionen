@@ -120,17 +120,17 @@
             .then((userCredential) => {
                 const user = userCredential.user;
 
-                //verifikasjonsmail --> funker ikke
-                user.sendEmailVerification().then(() => {
-                    console.log('Verifikasjonsmail sendt!');
-                    let messageElement = document.getElementById('message');
-                        if (!messageElement) {
-                            messageElement = document.createElement('p');
-                            messageElement.id = 'message';
-                            document.body.appendChild(messageElement);
-                            }
-                        messageElement.textContent = 'Verifikasjonsmail sendt!';
-                    });
+                // //verifikasjonsmail --> funker ikke
+                // user.sendEmailVerification().then(() => {
+                //     console.log('Verifikasjonsmail sendt!');
+                //     let messageElement = document.getElementById('message');
+                //         if (!messageElement) {
+                //             messageElement = document.createElement('p');
+                //             messageElement.id = 'message';
+                //             document.body.appendChild(messageElement);
+                //             }
+                //         messageElement.textContent = 'Verifikasjonsmail sendt!';
+                //     });
 
                 return db.collection("users").doc(user.uid).set({
                     fornavn: fornavn,
