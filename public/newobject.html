@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="no">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,27 +14,27 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>-->
     <title>Logg inn</title>
 
-<style>
-    body {
-        box-sizing: border-box;
-        /*background-color: #FDE767;*/
-        font-family: 'Josefin Sans', sans-serif;
-    }
+    <style>
+        body {
+            box-sizing: border-box;
+            /*background-color: #FDE767;*/
+            font-family: 'Josefin Sans', sans-serif;
+        }
 
-    a {
-      color: #f4f4f4;
-    }
-    #formContent {
-        -webkit-border-radius: 10px 10px 10px 10px;
-        border-radius: 10px 10px 10px 10px;
-        background: #662d91 !important;
+        a {
         color: #f4f4f4;
-            }
-    h2 {
-        color: #f4f4f4;
-    }
-    
-</style>
+        }
+        #formContent {
+            -webkit-border-radius: 10px 10px 10px 10px;
+            border-radius: 10px 10px 10px 10px;
+            background: #662d91 !important;
+            color: #f4f4f4;
+                }
+        h2 {
+            color: #f4f4f4;
+        }
+        
+    </style>
 </head>
 
 <body>
@@ -49,9 +50,9 @@
             <button type="submit" id="submitButton">Legg til objekt</button>
             
             <script>
-                document.getElementById('submitButton').addEventListener('click', function() {
-                    window.location.href = '/auksjonsobjekter.html';
-                });
+                // document.getElementById('submitButton').addEventListener('click', function() {
+                //     window.location.href = '/auksjonsobjekter.html';
+                // });
             </script>
           </form>
         </div>
@@ -63,46 +64,58 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
 
-<script>
+    <script>
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
-        authDomain: "omegaauctionen.firebaseapp.com",
-        databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
-        projectId: "omegaauctionen",
-        storageBucket: "omegaauctionen.appspot.com",
-        messagingSenderId: "612432199946",
-        appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
-        measurementId: "G-NLP4T6TXHL"
-    };
+        const firebaseConfig = {
+            apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
+            authDomain: "omegaauctionen.firebaseapp.com",
+            databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
+            projectId: "omegaauctionen",
+            storageBucket: "omegaauctionen.appspot.com",
+            messagingSenderId: "612432199946",
+            appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
+            measurementId: "G-NLP4T6TXHL"
+        };
 
-    firebase.firestore.setLogLevel('debug');
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+        firebase.firestore.setLogLevel('debug');
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-    document.querySelector('form').addEventListener('submit', function(event) {
-        event.preventDefault();
+        const auth = firebase.auth();
 
-        // Get values from form fields
-        const itemName = document.querySelector('input[name="itemName"]').value;
-        const startingPrice = parseFloat(document.querySelector('input[name="startingPrice"]').value);
-
-        // Add data to Firestore
-        db.collection("auctionItems").add({
-            itemName: itemName,
-            startingPrice: startingPrice,
-            // Add other fields here
-        })
-        .then((docRef) => {
-            console.log("Document written with ID: ", docRef.id);
-            // Redirect user after successful submission
-            window.location.href = "verify.html"; 
-        })
-        .catch((error) => {
-            console.error("Error adding document: ", error);
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User is logged in');
+            } else {
+                console.log('User is not logged in');
+            }
         });
-    });
-</script>
+
+        document.getElementById('submitButton').addEventListener('click', function(event) {
+            event.preventDefault();
+
+            // Get values from form fields
+            const itemName = document.querySelector('input[name="itemName"]').value;
+            const description = document.querySelector('textarea[name="description"]').value;
+            const startingPrice = parseFloat(document.querySelector('input[name="startingPrice"]').value);
+
+            // Add data to Firestore
+            db.collection("auctionItems").add({
+                itemName,
+                description,
+                startingPrice,
+                // Add other fields here
+            })
+            .then((docRef) => {
+                console.log("Document written with ID: ", docRef.id);
+                // Redirect user after successful submission
+                window.location.href = "verify.html"; 
+            })
+            .catch((error) => {
+                console.error("Error adding document: ", error);
+            });
+        });
+    </script>
 
 
 </body>
