@@ -585,7 +585,7 @@ function clickTab(user){
     firebase.auth().signOut().then(function() {
         console.log('User Logged Out!');
         document.querySelector('.hamburger-menu').style.width = '0';
-        window.location.href = "verify.html";
+        window.location.href = "index.html";
     }).catch(function(error) {
         console.error('Sign Out Error', error);
     });
