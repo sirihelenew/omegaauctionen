@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-
-
-<!DOCTYPE html>
 <html lang="no">
 <head>
     <meta charset="UTF-8">
@@ -45,10 +42,12 @@
           <h1>REGISTRER NYTT OBJEKT</h1> 
           <!-- Login Form -->
           <form>
-            <input type="text" name="objName" placeholder="Navn på objekt">
-            <textarea type = "text" name="objDescription" placeholder="Beskrivelse av objekt"></textarea>
-            <input type="text" name="minPrice" placeholder="Minimum pris">
+            <input type="text" name="itemName" placeholder="Navn på objekt">
+            <textarea type="text" name="description" placeholder="Beskrivelse av objekt"></textarea>
+            <input type="text" name="startingPrice" placeholder="Minimum pris">
+            <input type="file" name="picture" accept="image/*">
             <button type="submit" id="submitButton">Legg til objekt</button>
+            
             <script>
                 document.getElementById('submitButton').addEventListener('click', function() {
                     window.location.href = '/auksjonsobjekter.html';
@@ -58,81 +57,52 @@
         </div>
       </div>
 
+
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <!--<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>-->
-    
-    <script>
-        var firebaseConfig = {
-            apiKey: "AIzaSyBQdYPW-nMzPxGbCKtJ9mRNYLpv9uDcY_k",
-            authDomain: "testproject-43fdd.firebaseapp.com",
-            databaseURL: "https://testproject-43fdd-default-rtdb.europe-west1.firebasedatabase.app",
-            projectId: "testproject-43fdd",
-            storageBucket: "testproject-43fdd.appspot.com",
-            messagingSenderId: "1059098419352",
-            appId: "1:1059098419352:web:e7d25fdb8e54da1a45b0ed",
-            measurementId: "G-WH8X3H8YHZ"
-        };
-    
-        firebase.initializeApp(firebaseConfig);
-    
-        document.querySelector('form').addEventListener('submit', function(event) {
-            event.preventDefault();
-    
-           // Get values from form fields
-            const objName = document.querySelector('input[name="objName"]').value;
-            const objDescription = document.querySelector('textarea[name="objDescription"]').value;
-            const minPrice = document.querySelector('input[name="minPrice"]').value;
-        
-            // Print values to console for testing
-            console.log("Object Name:", objName);
-            console.log("Description:", objDescription);
-            console.log("Minimum Price:", minPrice);
-
-        });
-    </script>
-
-    <!--script>
 
 
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      var user = userCredential.user;
+<script>
 
-      window.location.href = "verify.html"; 
-    })
+    const firebaseConfig = {
+        apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
+        authDomain: "omegaauctionen.firebaseapp.com",
+        databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
+        projectId: "omegaauctionen",
+        storageBucket: "omegaauctionen.appspot.com",
+        messagingSenderId: "612432199946",
+        appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
+        measurementId: "G-NLP4T6TXHL"
+    };
+
+    firebase.firestore.setLogLevel('debug');
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Get values from form fields
+        const itemName = document.querySelector('input[name="itemName"]').value;
+        const startingPrice = parseFloat(document.querySelector('input[name="startingPrice"]').value);
+
+        // Add data to Firestore
+        db.collection("auctionItems").add({
+            itemName: itemName,
+            startingPrice: startingPrice,
+            // Add other fields here
+        })
+        .then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+            // Redirect user after successful submission
+            window.location.href = "verify.html"; 
+        })
         .catch((error) => {
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            var errorElement = document.getElementById('error-message');
-
-            if (errorCode === 'auth/wrong-password') {
-                errorElement.innerHTML = 'Wrong password.';
-            } else {
-                errorElement.innerHTML = errorMessage;
-            }
-
-                switch (errorCode) {
-                    case 'auth/invalid-email':
-                        errorElement.innerHTML = 'E-postadressen er ikke gyldig.';
-                        break;
-                    case 'auth/user-disabled':
-                        errorElement.innerHTML = 'Brukerkontoen har blitt deaktivert av en administrator.';
-                        break;
-                    case 'auth/user-not-found':
-                        errorElement.innerHTML = 'Det finnes ingen brukerpost som tilsvarer denne e-posten.';
-                        break;
-                    case 'auth/wrong-password':
-                        errorElement.innerHTML = 'Passordet er ugyldig for den gitte e-posten.';
-                        break;
-                    default:
-                        errorElement.innerHTML = errorMessage;
-                        break;
-                }
-            });
-});
-        
-    </script-->
+            console.error("Error adding document: ", error);
+        });
+    });
+</script>
 
 
 </body>
