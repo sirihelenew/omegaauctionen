@@ -13,28 +13,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>-->
     <title>Logg inn</title>
-
-    <style>
-        body {
-            box-sizing: border-box;
-            /*background-color: #FDE767;*/
-            font-family: 'Josefin Sans', sans-serif;
-        }
-
-        a {
-        color: #f4f4f4;
-        }
-        #formContent {
-            -webkit-border-radius: 10px 10px 10px 10px;
-            border-radius: 10px 10px 10px 10px;
-            background: #662d91 !important;
-            color: #f4f4f4;
-                }
-        h2 {
-            color: #f4f4f4;
-        }
-        
-    </style>
 </head>
 
 <body>
@@ -50,9 +28,9 @@
             <button type="submit" id="submitButton">Legg til objekt</button>
             
             <script>
-                // document.getElementById('submitButton').addEventListener('click', function() {
-                //     window.location.href = '/auksjonsobjekter.html';
-                // });
+                document.getElementById('submitButton').addEventListener('click', function() {
+                    window.location.href = '/auksjonsobjekter.html';
+                });
             </script>
           </form>
         </div>
@@ -95,17 +73,49 @@
         document.getElementById('submitButton').addEventListener('click', function(event) {
             event.preventDefault();
 
-            // Get values from form fields
             const itemName = document.querySelector('input[name="itemName"]').value;
             const description = document.querySelector('textarea[name="description"]').value;
             const startingPrice = parseFloat(document.querySelector('input[name="startingPrice"]').value);
+            const picture = this.querySelector('input[name="picture"]').files[0];
 
-            // Add data to Firestore
+            let imageURL = ''; // Default picture URL
+
+        if (picture) {
+            // Upload picture to Firebase Storage
+            const storageRef = storage.ref('pictures/' + picture.name);
+            storageRef.put(picture)
+                .then((snapshot) => {
+                    console.log('File uploaded successfully');
+                    return snapshot.ref.getDownloadURL(); // Get URL of uploaded file
+                })
+                .then((downloadURL) => {
+                    imageURL = downloadURL; // Save the URL of the uploaded picture
+                    // Save form data including picture URL to Firestore
+                    return db.collection("auctionItems").add({
+                        itemName,
+                        description,
+                        startingPrice,
+                        imageURL // Save the URL to imageURL attribute
+                    });
+                })
+                .then((docRef) => {
+                    console.log("Document written with ID: ", docRef.id);
+                    // Redirect user after successful submission
+                    window.location.href = "verify.html"; 
+                })
+                .catch((error) => {
+                    console.error("Error adding document: ", error);
+                });
+        } else {
+            // No picture uploaded, save default picture URL
+            imageURL = 'https://fl-1.cdn.flockler.com/embed/no-image.svg';
+
+            // Save form data with default picture URL to Firestore
             db.collection("auctionItems").add({
                 itemName,
                 description,
                 startingPrice,
-                // Add other fields here
+                imageURL // Save the URL to imageURL attribute
             })
             .then((docRef) => {
                 console.log("Document written with ID: ", docRef.id);
@@ -115,9 +125,8 @@
             .catch((error) => {
                 console.error("Error adding document: ", error);
             });
-        });
+        }
+    });
     </script>
-
-
 </body>
 </html>

@@ -6,12 +6,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/auksjonsobjekter.css"> 
+    <link rel="stylesheet" href="css/auctionitems.css"> 
 </head>
 <body>
     <div class="header">
         <h1>AUKSJONSOBJEKTER</h1>
-        <button class="header-button"><a href="https://forms.gle/Ei1FsLQweSpexLVJA">AUKSJONER BORT NOE HER!</a></button>
+        <!-- <button class="header-button"><a href="https://forms.gle/Ei1FsLQweSpexLVJA">AUKSJONER BORT NOE HER!</a></button> -->
         <a class="header-button" href="/newobject.html" target="_blank">LEGG TIL NYTT AUKSJONSOBJEKT</a>
     </div>
 
@@ -48,7 +48,7 @@
             cardHeader.classList.add("card-header");
 
             const cardImage = document.createElement("img");
-            cardImage.src = "https://www.newsbtc.com/wp-content/uploads/2020/06/mesut-kaya-LcCdl__-kO0-unsplash-scaled.jpg"; // Default image URL
+            cardImage.src = item.imageURL;
 
             const cardBody = document.createElement("div");
             cardBody.classList.add("card-body");
@@ -59,11 +59,6 @@
             let itemDescription = document.createElement("p");
             if (itemDescription.length > 0) {
                 itemDescription = item.description.length > 200 ? item.description.substring(0, 200) + "..." : item.description;
-            }
-
-            if (item && item.description) {
-                const truncatedDescription = item.description.substring(0, 100) + "...";
-                itemDescription.textContent = truncatedDescription;
             }
             
             const minBid = document.createElement("div");

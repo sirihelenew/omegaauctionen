@@ -2,14 +2,26 @@
 
 /* BASIC */
 
+
+body {
+  box-sizing: border-box;
+  /*background-color: #FDE767;*/
+  font-family: 'Josefin Sans', sans-serif;
+  height: 100vh;
+}
+
+
+#formContent {
+  -webkit-border-radius: 10px 10px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
+  background: #662d91 !important;
+  color: #f4f4f4;
+      }
+
+
 html {
   /*background-color: #56baed;*/
   background-color: #F5EEE6;
-}
-
-body {
-  /*font-family: "Poppins", sans-serif;*/
-  height: 100vh;
 }
 
 a {
