@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/auksjonsobjekter.css"> 
+</head>
+<body>
+    <div class="header">
+        <h1>AUKSJONSOBJEKTER</h1>
+        <button class="header-button"><a href="https://forms.gle/Ei1FsLQweSpexLVJA">AUKSJONER BORT NOE HER!</a></button>
+        <a class="header-button" href="/newobject.html" target="_blank">LEGG TIL NYTT AUKSJONSOBJEKT</a>
+    </div>
+
+    <div class="container" id = "auctionContainer"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
+            authDomain: "omegaauctionen.firebaseapp.com",
+            databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
+            projectId: "omegaauctionen",
+            storageBucket: "omegaauctionen.appspot.com",
+            messagingSenderId: "612432199946",
+            appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
+            measurementId: "G-NLP4T6TXHL"
+        };
+        
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(app);
+        const auctionItemsRef = db.collection("auctionItems");
+
+        function renderAuctionCard(item) {
+            const container = document.getElementById("auctionContainer");
+
+            const card = document.createElement("div");
+            card.classList.add("card");
+
+            const cardHeader = document.createElement("div");
+            cardHeader.classList.add("card-header");
+
+            const cardImage = document.createElement("img");
+            cardImage.src = "https://www.newsbtc.com/wp-content/uploads/2020/06/mesut-kaya-LcCdl__-kO0-unsplash-scaled.jpg"; // Default image URL
+
+            const cardBody = document.createElement("div");
+            cardBody.classList.add("card-body");
+
+            const itemName = document.createElement("h4");
+            itemName.textContent = item.itemName;
+
+            let itemDescription = document.createElement("p");
+            if (itemDescription.length > 0) {
+                itemDescription = item.description.length > 200 ? item.description.substring(0, 200) + "..." : item.description;
+            }
+
+            if (item && item.description) {
+                const truncatedDescription = item.description.substring(0, 100) + "...";
+                itemDescription.textContent = truncatedDescription;
+            }
+            
+            const minBid = document.createElement("div");
+            const minBidTitle = document.createElement("h5");
+            minBidTitle.textContent = "Minste bud";
+            const minBidAmount = document.createElement("small");
+            minBidAmount.textContent = item.startingPrice + " kr";
+
+            // Append elements
+            minBid.appendChild(minBidTitle);
+            minBid.appendChild(minBidAmount);
+
+            cardBody.appendChild(itemName);
+            cardBody.appendChild(itemDescription);
+            cardBody.appendChild(minBid);
+
+            cardHeader.appendChild(cardImage);
+
+            card.appendChild(cardHeader);
+            card.appendChild(cardBody);
+
+            container.appendChild(card);
+        }
+
+        // Fetch auction items from Firestore and render cards
+        auctionItemsRef.get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                renderAuctionCard(doc.data());
+            });
+        });
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+            // User is signed in
+            console.log("User is logged in:", user);
+            } else {
+            // No user is signed in
+            console.log("User is not logged in.");
+            }
+        });
+    </script>
+</body>
+</html>
