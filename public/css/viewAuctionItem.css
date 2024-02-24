@@ -21,6 +21,7 @@
     border-radius: 20px;
     overflow: hidden;
     border: 10px solid #fff;
+    background: #fff;
 }
 
 .product-image{
@@ -36,7 +37,7 @@
 }
 
 .product-details{
-    flex-basis: 60%;
+    flex-basis: 53%;
     background: #fff;
     padding: 0px;
     padding-left: 60px;
