@@ -1,27 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet"> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/data_view.css"> 
-</head>
-<body>
-    
-    <h1>DATA JIPPI</h1>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    <!-- <script src="/node_modules/chart.js/dist/chart.umd.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <!-- <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script> -->
+</head>
+<body>
+    <h1>DATA JIPPI</h1>
 
     <canvas id="biggestSpenderChart" style="width:100%;max-width:700px"></canvas>
-    <canvas id="classSpenderChart" style="width:100%;max-width:700px"></canvas>
+    <canvas id="classSpendageChart" style="width:100%;max-width:700px"></canvas>
+    <canvas id="stretchGoalChart" style="width:100%;max-width:700px"></canvas>
 
     <script>
-        // TODO: stretch goals
+        const stretchGoals = [
+            {
+                label: 'Innsamlet',
+                data: [5000, 5000],
+                borderWidth: 1,
+                fill: true,
+            },
+            { label: "Stretch goal 1", data: [3000, 3000] },
+            { label: "Stretch goal 1", data: [7000, 7000] }
+        ];
+
+        const classSpendages = {
+            "first": 0,
+            "second": 0,
+            "third": 0,
+            "fourth": 0,
+            "fifth": 0,
+            "other":0,
+        };
+    </script>
+    <script>
+        // MASSIVE credits to haakonbae: 
+        // https://github.com/haakonbaa
         const biggestSpenderChart = new Chart("biggestSpenderChart", {
             type: "doughnut",
             data: {
@@ -31,17 +50,53 @@
                     'Yellow'
                 ],
                 datasets: [{
-                    label: 'My First Dataset',
+                    label: 'Biggest spenders',
                     data: [300, 50, 100],
-                    backgroundColor: [
-                        'rgb(255, 99, 132)',
-                        'rgb(54, 162, 235)',
-                        'rgb(255, 205, 86)'
-                    ],
                     hoverOffset: 4
                 }]
             },
             options: {}
+        });
+
+        const classSpendageChart = new Chart("classSpendageChart", {
+            type: "doughnut",
+            data: {
+                labels: [
+                    'First',
+                    'Second',
+                    'Third',
+                    'Fourth',
+                    'Fifth',
+                    'other',
+                ],
+                datasets: [{
+                    label: 'Money spent by class',
+                    data: [0, 0, 0, 0, 0, 0],
+                    hoverOffset: 4
+                }]
+            },
+            options: {}
+        });
+
+        const stretchGoalChart = new Chart('stretchGoalChart', {
+            type: "line",
+            data: {
+                labels: ["", ""],
+                datasets: stretchGoals,
+            },
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        display: true,
+                        min: 0,
+                        max: 10000,
+                    },
+                    y: {
+                        beginAtZero: true,
+                    }
+                }
+            },
         });
     </script>
     <script>
@@ -65,6 +120,7 @@
 
             let p = document.getElementById("view");
             
+            let total = 0;
             let data = [];
             let labels = [];
 
@@ -92,9 +148,10 @@
                             spenders[fullName] += auctionItemDoc.data().currentPrice;
                         }
 
-                        // data.push(auctionItemDoc.data().currentPrice);
+                        total += auctionItemDoc.data().currentPrice;
+                        classSpendages[userDoc.data().grade] += auctionItemDoc.data().currentPrice;
                     } else {
-                        console.log("user not foun");
+                        console.log("user not found. Most likely no one has placed a bid yet.");
                     }   
                 } catch (error) {
                     console.error("Error updating data: ", error);
@@ -110,8 +167,6 @@
                 data[5] = 0;
                 entries.forEach((entry, index, _arr) => {
                     if (index < 5) {
-                        console.log(entry[0]);
-
                         data[index] = entry[1];
                         labels[index] = entry[0];
                     } else {
@@ -129,17 +184,28 @@
                 });
                 await Promise.all(promises);
                 getChartData();
-                console.log(data);
+                
                 biggestSpenderChart.data.datasets[0].data = data;
                 biggestSpenderChart.data.datasets[0].backgroundColor = colors;
                 biggestSpenderChart.data.labels = labels;
                 biggestSpenderChart.update();
-                console.log(spenders);
 
+                classSpendageChart.data.datasets[0].data = [
+                    classSpendages.first,
+                    classSpendages.second,
+                    classSpendages.third,
+                    classSpendages.fourth,
+                    classSpendages.fifth,
+                    classSpendages.other,
+                ]
+                classSpendageChart.update();
+
+                stretchGoalChart.data.datasets[0].data = [total, total];
+                stretchGoalChart.update();
             } catch (error) {
                 console.error("Error fetching data: ", error);
             }
         });
-</script>
+    </script>
 </body>
 </html>
