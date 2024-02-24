@@ -39,11 +39,37 @@
         const db = firebase.firestore(app);
         const auctionItemsRef = db.collection("auctionItems");
 
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+            // User is signed in
+            console.log("User is logged in:", user);
+            } else {
+            // No user is signed in
+            console.log("User is not logged in.");
+            }
+        });
+
+        function getUserId() {
+            const user = firebase.auth().currentUser;
+            if (user) {
+                console.log("User ID:", user.uid);
+                return user.uid;
+            } else {
+                return null;
+            }
+        }
+
         function renderAuctionCard(item) {
             const container = document.getElementById("auctionContainer");
 
             const card = document.createElement("div");
             card.classList.add("card");
+
+            // Wrap the card with an anchor tag linking to viewAuctionItem.html with item ID as a query parameter
+            const cardLink = document.createElement("a");
+            cardLink.href = `viewAuctionItem.html?itemId=${item.id}`;
+            cardLink.classList.add("cardLink"); // Add the class
+            cardLink.appendChild(card);
 
             const cardHeader = document.createElement("div");
             cardHeader.classList.add("card-header");
@@ -55,18 +81,21 @@
             cardBody.classList.add("card-body");
 
             const itemName = document.createElement("h4");
-            itemName.textContent = item.itemName;
+            itemName.textContent = item.data().itemName;
+
+            const currentBidderID = document.createElement("small");
+            currentBidderID.textContent = getUserId(); // TODO: Get highest bidder name from Firestore
 
             let itemDescription = document.createElement("p");
             if (itemDescription.length > 0) {
-                itemDescription = item.description.length > 200 ? item.description.substring(0, 200) + "..." : item.description;
+                itemDescription = item.data().description.length > 200 ? item.data().description.substring(0, 200) + "..." : item.data().description;
             }
             
             const minBid = document.createElement("div");
             const minBidTitle = document.createElement("h5");
             minBidTitle.textContent = "Minste bud";
             const minBidAmount = document.createElement("small");
-            minBidAmount.textContent = item.startingPrice + " kr";
+            minBidAmount.textContent = item.data().startingPrice + " kr";
 
             // Append elements
             minBid.appendChild(minBidTitle);
@@ -81,24 +110,16 @@
             card.appendChild(cardHeader);
             card.appendChild(cardBody);
 
-            container.appendChild(card);
+            card.appendChild(currentBidderID);
+
+            container.appendChild(cardLink); // Append the card link instead of the card
         }
 
         // Fetch auction items from Firestore and render cards
         auctionItemsRef.get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                renderAuctionCard(doc.data());
+                renderAuctionCard(doc);
             });
-        });
-
-        firebase.auth().onAuthStateChanged((user) => {
-            if (user) {
-            // User is signed in
-            console.log("User is logged in:", user);
-            } else {
-            // No user is signed in
-            console.log("User is not logged in.");
-            }
         });
     </script>
 </body>

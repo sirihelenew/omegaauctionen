@@ -18,7 +18,7 @@
           <form>
             <input type="text" name="itemName" placeholder="Navn på objekt">
             <textarea type="text" name="description" placeholder="Beskrivelse av objekt"></textarea>
-            <input type="text" name="startingPrice" placeholder="Minimum pris">
+            <input type="number" name="startingPrice" placeholder="Minimum pris">
             <input type="file" name="picture" accept="image/*">
             <button type="submit" id="submitButton">Legg til objekt</button>
           </form>
@@ -84,27 +84,31 @@
                             itemName,
                             description,
                             startingPrice,
-                            imageURL // Save the URL to imageURL attribute
+                            imageURL, // Save the URL to imageURL attribute
+                            currentPrice: startingPrice,
+                            highestBidder: "None"
                         });
                     })
                     .then((docRef) => {
                         console.log("Document written with ID: ", docRef.id);
                         // Redirect user after successful submission
-                        window.location.href = "verify.html"; 
+                        window.location.href = "auctionitems.html"; 
                     })
                     .catch((error) => {
                         console.error("Error adding document: ", error);
                     });
             } else {
                 // No picture uploaded, save default picture URL
-                imageURL = 'https://www.ormistonhospital.co.nz/wp-content/uploads/2016/05/No-Image.jpg';
+                imageURL = 'https://resources.alleghenycounty.us/css/images/Default_No_Image_Available.png';
 
                 // Save form data with default picture URL to Firestore
                 db.collection("auctionItems").add({
                     itemName,
                     description,
                     startingPrice,
-                    imageURL
+                    imageURL,
+                    currentPrice: startingPrice,
+                    highestBidder: "None"
                 })
                 .then((docRef) => {
                     console.log("Document written with ID: ", docRef.id);
