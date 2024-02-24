@@ -53,9 +53,6 @@
                 console.log('User is not logged in');
             }
         });
-        
-        // document.getElementById('submitButton').addEventListener('click', function(event) {
-        //     event.preventDefault();
 
         document.querySelector('form').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -64,8 +61,12 @@
             const description = document.querySelector('textarea[name="description"]').value;
             const startingPrice = parseFloat(document.querySelector('input[name="startingPrice"]').value);
             const picture = document.querySelector('input[name="picture"]').files[0];
+            const submitButton = document.getElementById('submitButton');
 
-            let imageURL = ''; // Default picture URL
+            submitButton.disabled = true;
+            submitButton.classList.add('button-disabled');
+
+            let imageURL = '';
 
             if (picture) {
                 // Upload picture to Firebase Storage
@@ -108,7 +109,7 @@
                 .then((docRef) => {
                     console.log("Document written with ID: ", docRef.id);
                     // Redirect user after successful submission
-                    window.location.href = "verify.html"; 
+                    window.location.href = "auctionitems.html";
                 })
                 .catch((error) => {
                     console.error("Error adding document: ", error);
