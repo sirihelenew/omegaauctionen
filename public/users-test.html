@@ -49,10 +49,21 @@
           </form>
       
           <form id="register-form" style="display: none;">
-            <input type="text" id="fornavn" class="fadeIn third" placeholder="Fornavn">
-            <input type="text" id="etternavn" class="fadeIn third" placeholder="Etternavn">
+            <input type="text" id="firstname" class="fadeIn third" placeholder="Fornavn">
+            <input type="text" id="lastname" class="fadeIn third" placeholder="Etternavn">
             <input type="text" id="register-email" class="fadeIn second" placeholder="Epost">
             <input type="password" id="register-password" class="fadeIn third" placeholder="Passord">
+            <br><br>
+            <label for="grade">Velg trinn:</label>
+            <select name="grade" id="grade">
+                <option value="other">annet</option>
+                <option value="first">1. trinn</option>
+                <option value="second">2. trinn</option>
+                <option value="third">3. trinn</option>
+                <option value="fourth">4. trinn</option>
+                <option value="five">5. trinn</option>
+            </select>
+            <br><br>
             <input type="submit" class="fadeIn fourth" value="Registrer">
           </form>
       
@@ -118,10 +129,11 @@
 
         document.getElementById('register-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            const fornavn = document.getElementById('fornavn').value;
-            const etternavn = document.getElementById('etternavn').value;
+            const firstname = document.getElementById('firstname').value;
+            const lastmame = document.getElementById('lastname').value;
             const email = document.getElementById('register-email').value;
             const password = document.getElementById('register-password').value;
+            const grade = document.getElementById('grade').value;
 
             firebase.auth().createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
@@ -140,9 +152,10 @@
                 //     });
 
                 return db.collection("users").doc(user.uid).set({
-                    fornavn: fornavn,
-                    etternavn: etternavn,
-                    email: email
+                    firstname,
+                    lastmame,
+                    email,
+                    grade
                 });
             })
             .then(() => {

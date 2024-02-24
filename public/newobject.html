@@ -78,13 +78,12 @@
                         return snapshot.ref.getDownloadURL(); // Get URL of uploaded file
                     })
                     .then((downloadURL) => {
-                        imageURL = downloadURL; // Save the URL of the uploaded picture
-                        // Save form data including picture URL to Firestore
+                        imageURL = downloadURL;
                         return db.collection("auctionItems").add({
                             itemName,
                             description,
                             startingPrice,
-                            imageURL, // Save the URL to imageURL attribute
+                            imageURL,
                             currentPrice: startingPrice,
                             highestBidder: "None"
                         });
