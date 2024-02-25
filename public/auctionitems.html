@@ -89,11 +89,9 @@
             const currentBidderID = document.createElement("small");
             currentBidderID.textContent = item.data().highestBidder;
 
-            let descriptionText = item.data().description;
+            let descriptionText = item.data().hasOwnProperty('description') ? item.data().description : "";
             if (descriptionText.length > 0) {
-                descriptionText = descriptionText.length > 100 ? descriptionText.substring(0, 100) + "..." : descriptionText;
-            } else {
-                descriptionText = descriptionText + " "*(53-descriptionText.length); // Default text if description is empty
+                descriptionText = descriptionText.length > 50 ? descriptionText.substring(0, 50) + "..." : descriptionText;
             }
 
             let itemDescription = document.createElement("p");

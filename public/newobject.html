@@ -16,14 +16,23 @@
           <h1>REGISTRER NYTT OBJEKT</h1> 
           <!-- Login Form -->
           <form>
-            <input type="text" name="itemName" placeholder="Navn på objekt">
+            <input type="text" name="itemName" placeholder="Navn på objekt" >
             <textarea type="text" name="description" placeholder="Beskrivelse av objekt"></textarea>
             <input type="number" name="startingPrice" placeholder="Minimum pris">
-            <input type="file" name="picture" accept="image/*">
-            <button type="submit" id="submitButton">Legg til objekt</button>
+            <input type="file" name="picture" accept="image/*"><br><br>
+            <input type="checkbox" id="liveAuctionCheck" name="liveAuctionCheck" value="liveAuctionCheck">
+            <label for="liveAuctionCheck"> Auksjonsobjektet skal auksjoneres live </label><br><br>
+            <input type="checkbox" id="fixedItemCheck" name="fixedItemCheck" value="fixedItemCheck">
+            <label for="fixedItemCheck"> Selges til fast pris (flere kan kjøpe samme objekt) </label><br><br>
+            <button type="submit" id="submitButton">
+                Legg til objekt
+                <div id="spinner" style="display: none;">
+                    <div></div><div></div><div></div><div></div>
+                </div>
+            </button>
           </form>
         </div>
-      </div>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -63,9 +72,19 @@
             const startingPrice = parseFloat(startingPriceInput) || 0;
             const picture = document.querySelector('input[name="picture"]').files[0];
             const submitButton = document.getElementById('submitButton');
+            const spinner = document.getElementById('spinner');
+            let liveAuctionCheck = document.getElementById("liveAuctionCheck");
+            let fixedItemCheck = document.getElementById("fixedItemCheck");
+
+            // Form validation
+            if (!itemName.trim()) {
+                alert('Please fill out the name field.');
+                return;
+            }
 
             submitButton.disabled = true;
-            submitButton.classList.add('button-disabled');
+            submitButton.style.backgroundColor = '#aaa'; // Change button color
+            spinner.style.display = 'inline-block'; // Show spinner
 
             let imageURL = '';
 
@@ -86,7 +105,9 @@
                             startingPrice,
                             imageURL,
                             currentPrice: startingPrice,
-                            highestBidder: "None"
+                            highestBidder: "None",
+                            liveAuction: liveAuctionCheck.checked,
+                            fixedPrice: fixedItemCheck.checked
                         });
                     })
                     .then((docRef) => {
@@ -108,7 +129,9 @@
                     startingPrice,
                     imageURL,
                     currentPrice: startingPrice,
-                    highestBidder: "None"
+                    highestBidder: "None",
+                    liveAuction: liveAuctionCheck.checked,
+                    fixedPrice: fixedItemCheck.checked
                 })
                 .then((docRef) => {
                     console.log("Document written with ID: ", docRef.id);
