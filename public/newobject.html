@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/newobject.css">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@200;400&display=swap" rel="stylesheet">
+    <title>Nytt objekt</title>
+</head>
+
+<body>
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+          <h1>REGISTRER NYTT OBJEKT</h1> 
+          <!-- Login Form -->
+          <form>
+            <input type="text" name="itemName" placeholder="Navn på objekt">
+            <textarea type="text" name="description" placeholder="Beskrivelse av objekt"></textarea>
+            <input type="number" name="startingPrice" placeholder="Minimum pris">
+            <input type="file" name="picture" accept="image/*">
+            <button type="submit" id="submitButton">Legg til objekt</button>
+          </form>
+        </div>
+      </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script>
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
+            authDomain: "omegaauctionen.firebaseapp.com",
+            databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
+            projectId: "omegaauctionen",
+            storageBucket: "omegaauctionen.appspot.com",
+            messagingSenderId: "612432199946",
+            appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
+            measurementId: "G-NLP4T6TXHL"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User is logged in');
+            } else {
+                console.log('User is not logged in');
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const itemName = document.querySelector('input[name="itemName"]').value;
+            const description = document.querySelector('textarea[name="description"]').value;
+            const startingPriceInput = document.querySelector('input[name="startingPrice"]').value;
+            const startingPrice = parseFloat(startingPriceInput) || 0;
+            const picture = document.querySelector('input[name="picture"]').files[0];
+            const submitButton = document.getElementById('submitButton');
+
+            submitButton.disabled = true;
+            submitButton.classList.add('button-disabled');
+
+            let imageURL = '';
+
+            if (picture) {
+                // Upload picture to Firebase Storage
+                const storage = firebase.storage();
+                const storageRef = storage.ref('pictures/' + picture.name);
+                storageRef.put(picture)
+                    .then((snapshot) => {
+                        console.log('File uploaded successfully');
+                        return snapshot.ref.getDownloadURL(); // Get URL of uploaded file
+                    })
+                    .then((downloadURL) => {
+                        imageURL = downloadURL;
+                        return db.collection("auctionItems").add({
+                            itemName,
+                            description,
+                            startingPrice,
+                            imageURL,
+                            currentPrice: startingPrice,
+                            highestBidder: "None"
+                        });
+                    })
+                    .then((docRef) => {
+                        console.log("Document written with ID: ", docRef.id);
+                        // Redirect user after successful submission
+                        window.location.href = "auctionitems.html"; 
+                    })
+                    .catch((error) => {
+                        console.error("Error adding document: ", error);
+                    });
+            } else {
+                // No picture uploaded, save default picture URL
+                imageURL = 'https://resources.alleghenycounty.us/css/images/Default_No_Image_Available.png';
+
+                // Save form data with default picture URL to Firestore
+                db.collection("auctionItems").add({
+                    itemName,
+                    description,
+                    startingPrice,
+                    imageURL,
+                    currentPrice: startingPrice,
+                    highestBidder: "None"
+                })
+                .then((docRef) => {
+                    console.log("Document written with ID: ", docRef.id);
+                    // Redirect user after successful submission
+                    window.location.href = "auctionitems.html";
+                })
+                .catch((error) => {
+                    console.error("Error adding document: ", error);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

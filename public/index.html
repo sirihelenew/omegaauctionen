@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="no">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Omegaauctionen 2024</title>
+    <!--.css filer-->
+    <link rel="stylesheet" href="css/progressbar.css">
+    <link rel="stylesheet" href="css/navigasjon.css">
+    <link rel="stylesheet" href="css/logos.css">
+    <!--<link rel="stylesheet" href="css/footer.css">-->
+    <!--Ikoner-->
+    <script src="https://kit.fontawesome.com/c110f170bd.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+    <style>
+      body {
+            background-color: var(--hvit);
+            font-family: 'Josefin Sans', sans-serif;
+            margin: 0;
+        }
+        :root {
+        --jub-lilla: #662d91;
+        --jub-oransje: #e36a36;
+        --hvit: #f4f4f4;
+        --grå: #333;
+        --deeppink: #FF407D;
+        --deepblue: #0C359E;
+        --skyblue: #4CB9E7;
+        --teal: #33BBC5;
+        --bebiblå: #7BD3EA;
+        --bebirosa: #FF9EAA;
+
+      }
+      article {
+            background-color: var(--hvit);
+        }
+        div {
+            background-color: var(--hvit);
+        }
+        main{
+            background-color: var(--hvit);
+        }
+        
+
+        #header {    
+            box-shadow: 0px 0px 1px 0px rgba(170,170,170,1) !important;
+            background-color: var(--jub-lilla);
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin: 0;
+            text-align: center;
+        }
+        h1 {
+            color: #f4f4f4;
+            font-size: 50px;
+        }
+
+        h2 {
+            color: #f4f4f4;
+            font-size: 30px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .header-button {
+            background-color: #f4f4f4; 
+            border: none;
+            color: #333;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: underline;
+            display: relative;
+            font-size: 40px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            /*box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);*/
+            font-family: 'Roboto', sans-serif;
+        }
+        .header-button p {
+            color: var(--teal);
+            font-weight: bold;
+        }
+
+        nav {
+            background-color: #f4f4f4;
+            color: wheat;
+            padding: 8px;
+        }
+        nav .logo {
+            position: absolute;
+            /*top: 0;*/
+            transform: translateY(-50%);
+            height: 50px; 
+            float: left;
+            margin-top: 20px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        nav ul li {
+            float: right;
+        }
+        .minBruker-knapp {
+          float: right;
+        }
+
+        nav ul li a {
+            display: block;
+            color: #333;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        nav ul a {
+            display: block;
+            color: #333;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        nav ul li a:hover {
+            background-color: #F8F4EC;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+              font-size: 30px !important;
+            }
+            nav .logo {
+            position: absolute;
+            transform: translateY(-50%);
+            height: 40px; 
+            float: left;
+            margin-top: 20px;
+            }
+
+            nav ul {
+                text-align: center;
+            }
+
+            nav ul li a {
+                padding: 10px 8px;
+            }
+            nav ul a {
+                padding: 10px 8px;
+            }
+            h3 {
+                white-space: normal;
+            }
+            /*p {
+                font-size: 25px !important;
+            }*/
+            .bedrifter__obj::marker {
+              content: none;
+            }
+        }
+
+        nav ul a .fa-solid {
+            line-height: 0;
+        }
+
+
+        .fa-solid {
+            line-height: 54px;
+        }
+        .fas {
+            line-height: 54px;
+        }
+        
+        h3 {
+            color: #662d91;
+            font-size: 30px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+        main h1 {
+            color: #e36a36;
+            font-size: 30px;
+            text-align: center;
+            text-transform: uppercase;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: relative;
+            background-color: #f4f4f4;
+            color: #333;
+            min-width: 160px;
+            /*box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);*/
+            padding: 12px 16px;
+            z-index: 1;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .brukerinfo {
+          display: none;
+            position: relative;
+            background-color: #f4f4f4;
+            color: #333;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            padding: 12px 16px;
+            z-index: 1;
+            font-family: 'Roboto', sans-serif;
+
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .hamburger-menu {
+            height: 100%; 
+            width: 0; 
+            position: fixed; 
+            z-index: 1; 
+            top: 0;
+            right: 0; 
+            background-color: #111; 
+            overflow-x: hidden; 
+            transition: 0.5s; 
+            padding-top: 30px; 
+        }
+
+        .hamburger-menu p {
+            padding: 10px 10px 10px 30px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #f4f4f4;
+            display: block;
+            transition: 0.3s;
+        }
+        .hamburger-menu a {
+            padding: 10px 10px 10px 30px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #f4f4f4;
+            display: block;
+            transition: 0.3s;
+            text-align: left;
+        }
+
+        .loginmessage {
+            position: relative;
+            display: block; 
+            box-sizing: border-box;
+          }
+
+          .loginmessage-content {
+            display: none; 
+            background-color: #f4f4f4; 
+            color: #333; 
+            margin: 0 auto;
+            box-shadow: 0px 5px 10px 0px rgba(0,0,0,0.2); 
+            padding: 12px 16px; 
+            font-family: 'Roboto', sans-serif; 
+            margin-top: 2rem; 
+            box-sizing: border-box;
+            text-align: center; 
+            width: 50%;
+          }
+
+          .loginmessage-content p {
+            font-size: 20px; 
+          }
+
+          .loginmessage:hover .loginmessage-content {
+            display: block; 
+          }
+
+          .loginmessage-content * {
+            -webkit-animation: scale 0.2s ease-in-out;
+            -moz-animation: scale 0.2s ease-in-out;
+            animation: scale 0.2s ease-in-out;
+          }
+
+          .close-btn {
+            position: absolute;
+            top: 0;
+            left: 0;
+            border-radius: 4px;
+            padding: 10px 15px;
+            background-color: #111;
+            color: #f4f4f4;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+            display: inline-block;
+            margin: 4px 2px;
+            font-family: 'Josefin Sans', sans-serif;
+          }
+          .close-btn .fa-solid {
+            line-height: 0;
+          }
+          
+  </style>
+  </head>
+
+  <body>
+    <nav>
+      <a href="https://omega.ntnu.no/frontpage"><img src="images/omegalogojub.png" alt="Logo" class="logo"></a>
+      <ul>
+        <a href="#" class="minBruker-knapp"><i class="fa-solid fa-user"></i> Min bruker</a>
+        <div class="hamburger-menu">
+          <button class="close-btn"><i class="fa-solid fa-angle-left"></i> Tilbake</button>
+          <a href="#"><i class="fa-solid fa-heart"></i> Mine favoritter</a>
+          <a href="test.html"><i class="fa-solid fa-gavel"></i> Mine bud</a>
+          <a href="#"><i class="fa-solid fa-heart"></i> Mine favoritter</a>
+          <a href="#" id="logoutButton"><i class="fa-solid fa-right-from-bracket"></i> Logg ut</a>
+        </div>
+        <li class="dropdown">
+            <a href="javascript:void(0);" class="dropbtn">Informasjon</a>
+            <div class="dropdown-content">
+                <p>OmegaAuctionen arrangeres av
+                Sct. Omega Broderskab, linjeforeningen
+                tilknyttet Kybernetikk og Robotikk og
+                Elektronisk Systemdesign og Innovasjon ved NTNU.</p>
+            </div>
+        </li>
+          <li class="dropdown">
+              <a href="javascript:void(0);" class="dropbtn">Kontakt</a>
+              <div class="dropdown-content">
+                  <p>siriwahl@icloud.com</p>
+                  <p></p>
+              </div>
+          </li>
+      </ul>
+  </nav>
+
+  <div id="header">
+    <h1 style="font-size: 70px;">OMEGAAUCTIONEN</h1>
+    <h1 style="font-size: 30 px; font-family: 'Roboto';">27.02.24</h1>
+  <!--<h2>27.februar</h2>-->
+  <!--<h2>Ny bruker?</h2>-->
+  <button class="header-button"><a href="users-test.html">Logg inn her</a></button>
+</div>
+
+<div id="header" style="background-color: var(--hvit); padding: 1px;">
+  <!--<button class="header-button" style="background-color: var(--hvit);"><p>VIPPS: <span>#668205</span></p></button>-->
+  <p style="font-family: 'Roboto', sans-serif; font-size: 40px; color: black; font-weight: bold;">VIPPS: <span style="color: black; text-decoration: underline var(--bebiblå);">#668205</span></p>
+</div>
+
+<article class="article">
+  <div class="grid__item--1of1 text-center">
+      <div class="tabs">
+          <input type="radio" name="tabs" id="tab1" onclick="redirectToAuctionItems()">
+          <label for="tab1">
+              <i class="fa-solid fa-gavel icon"></i><span>Auksjonsobjekter</span>
+          </label>
+          
+          <input type="radio" name="tabs" id="tab2">
+          <label for="tab2">
+              <i class="fa-solid fa-bars-progress icon"></i><span>Visualisering</span>
+          </label>
+          <input type="radio" name="tabs" id="tab3">
+          <label for="tab3">
+              <i class="fa-solid fa-medal icon"></i><span>Aktiviteter</span>
+          </label>
+          <input type="radio" name="tabs" id="tab4" checked>
+          <label for="tab4">
+              <i class="fa-solid fa-hand-holding-heart icon"></i><span>Veldedighet</span>
+          </label>
+            <!--Logg inn for å se innhold-->
+            <div id="login-message" class="loginmessage-content" style="display: none;">
+                <p>For å se dette innholdet, må du være logget inn <i class="fa-regular fa-face-smile-wink"></i></p>
+                <p></p>
+            </div>
+        
+            <div id="tab__content--1" class="tab__content">
+              <h3 style="color: var(--bebirosa); ">Auksjonsobjekter</h3>
+              <p style="text-align: left; font-style: italic; font-size: 20px;">Et lite utvalg av årets auksjonsobjekter:</p>
+              <p style="text-align: left;"><i class="fa-solid fa-angle-right"></i> Har du vært fortvilet over midtsidebildene i Ombul fordi du vet du kunne gjort så mye bedre? <span style="font-size: 10px;">(Jeg og).</span> 
+              Tradisjons tro kan du i år få muligheten til å være <span style="font-weight: bold;">høstens første midtsidebilde!</span></p>
+              <p style="text-align: left;"><i class="fa-solid fa-angle-right"></i> Lei av kjedelige vors? <i class="fa-regular fa-face-dizzy"></i> Bring vorset ditt til nye høyder med egen <span style="font-weight: bold;">vandrebar 
+                levert av Kielder.</span></p>
+              <p style="text-align: left;"><i class="fa-solid fa-angle-right"></i> Lei av kjedelige nach? Omega Band stiller med <span style="font-weight: bold;">nachgitarister hjem til deg.</span></p>
+              <p style="text-align: left;"><i class="fa-solid fa-angle-right"></i> Tom for åpningsreplikker på Tinder? Hva med <span style="color: var(--deeppink);">"Bli med på date i Ohma Electra"</span>? 
+              Dette er rizzen din: <i class="fa-solid fa-chart-line"></i> etter <span style="font-weight: bold;">romantisk middag for to i Ohma, levert av Loccom.</span></p>
+              <p style="text-align: left;"><i class="fa-solid fa-angle-right"></i> Vil du være center of attention? <span style="font-weight: bold;">Lophtcom</span> gir deg nå muligheten til å få et  
+                <span style="font-weight: bold;">bilde av deg selv hengt opp i midten mellom alle midtsidebildene på Loftet.</span></p>
+                <button class="header-button" style="background-color: var(--deeppink); font-size: 20px; font-weight: bold;"><a href="https://forms.gle/bUr6xxT1S7finWZb9" style="color: var(--hvit);">Vil du auksjonere bort noe?</a></button>
+          </div>
+          <div id="tab__content--2" class="tab__content">
+              <button class="header-button" style="background-color: #A6D1E6;"><a href="live_view.html" style="color: #333;">Visualisering :3</a></button>
+          <div id="tab__content--3" class="tab__content">
+              <h3 style="color: var(--bebirosa);">Dagens aktiviteter</h3>
+              <p style="text-align: left;">Som alltid er OmegaAuctionen en fest i seg selv, med stretchgoals som gjennomføres og masse kule auksjonsobjekter til salgs!</p>
+              <p style="text-align: left;"><span style="font-weight: bold;">Kielder</span> stiller selvfølgelig med vandrebar! <i class="fa-solid fa-beer-mug-empty" style="color: var(--deeppink);"></i></p>
+              <p style="text-align: left;">I tillegg blir det flere muligheter for å vinne <span style="font-weight: bold;">premier</span>, inkludert bl.a. festivalpass til Festningen og
+              gavekort på valgfri massasje hos Trondheim Spa.</p>
+              <p><p style="text-align: left;">Det kommer mer informasjon om dagsplan - viktigst av alt er at dette er et <span style="font-weight: bold; color: var(--deeppink);">morsomt</span> arrangement, med 
+              hovedfokus på å gi til veldedighet - det beste av begge verdener! </p>
+          </div>
+          <div id="tab__content--4" class="tab__content">
+              <h3 style="color: var(--bebirosa);">Veldedighets-<wbr>informasjon</h3>
+              <p style="text-align: left;"><i class="fa-solid fa-angle-right"></i>Årets veldedige organisasjon er <strong>Helen Keller International.</strong></p>
+              <p style="text-align: left;"><i class="fa-solid fa-angle-right"></i>Valget er basert på <strong>GiveWell</strong> sin toppliste over effektive veldedighetsorganisasjoner.</p>
+              <p style="text-align: left;"><i class="fa-solid fa-angle-right"></i>Vi samarbeider med <strong>Gi Effektivt</strong>, som sørger for at 100% av innsamlet sum går direkte til HKI.</p>
+              <button class="header-button" style="background-color: var(--jub-lilla); font-size: 20px; font-weight: bold;"><a href="templates/veldedighetsinformasjon.html" style="color: var(--hvit);">LES MER HER!</a></button>
+          </div>
+      </div>
+  </div>
+</article>
+
+<main>
+  <h1>Årets sponsorer</h1>
+  <ul class="bedrifter">
+    <li class="bedrifter__obj">
+      <a href="https://www.festningen.no/">
+        <img src="images/festningen.png" alt="" style="width: 200px;"/>
+      </a>
+    </li>
+    <li class="bedrifter__obj">
+        <a href="https://www.barmuda.no/">
+          <img src="images/barmuda.png" alt="" />
+        </a>
+      </li>
+      <li class="bedrifter__obj">
+        <a href="https://downtown.no/">
+          <img src="images/dt.png" alt="" />
+        </a>
+      </li>
+      <li class="bedrifter__obj">
+        <a href="https://www.akademika.no/">
+          <img src="images/akademika.svg" alt="" />
+        </a>
+      </li>
+      <li class="bedrifter__obj">
+        <a href="https://escapehunt.com/no/trondheim/?gad_source=1&gclid=CjwKCAiAuNGuBhAkEiwAGId4atj-NF5Q1sa9dKq8DlOiSF0_8Z8akKCxZ-CqijEGa4uxwaosC-tMmhoChs8QAvD_BwE">
+          <img src="images/escapehunt.png" alt=""/>
+        </a>
+      </li>
+      <li class="bedrifter__obj">
+          <a href="https://sirkusshopping.no/">
+            <img src="images/sirkus.png" alt="" />
+          </a>
+        </li>
+        <li class="bedrifter__obj">
+          <a href="https://www.sansebastian.no/">
+            <img src="images/sansebastian.png" alt="" />
+          </a>
+        </li>
+        <li class="bedrifter__obj">
+          <a href="https://xn--frisrn-eya.no/">
+            <img src="images/frisor.svg" alt="" />
+          </a>
+        </li>
+        <li class="bedrifter__obj">
+            <a href="https://www.bunnpris.no/">
+              <img src="images/bunnpris.svg" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://www.roft.no/">
+              <img src="images/roft.png" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://egon.no/">
+              <img src="images/egon.webp" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://bowling1.no/trondheim/aktiviteter/bowling/">
+              <img src="images/bowling1.png" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://www.trondheimspa.no/">
+              <img src="images/trdspa.webp" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://www.tekna.no/">
+              <img src="images/tekna.png" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://www.brann.no/">
+              <img src="images/brann.svg" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://gripklatring.no/">
+              <img src="images/grip.png" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://campingen.no/trondheim">
+              <img src="images/camping.png" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://www.studio26.no/">
+              <img src="images/studio26.png" alt="" />
+            </a>
+          </li>
+  </ul>
+</main>
+<!-------------------------------------------------------------------------------->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <!-------------------------------------------------------------------------------->
+  <script>
+
+  function redirectToAuctionItems() {
+      window.location.href = "/auctionitems.html";
+  }
+ firebaseConfig = {
+            apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
+            authDomain: "omegaauctionen.firebaseapp.com",
+            databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
+            projectId: "omegaauctionen",
+            storageBucket: "omegaauctionen.appspot.com",
+            messagingSenderId: "612432199946",
+            appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
+            measurementId: "G-NLP4T6TXHL"
+        };
+    firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+
+auth.onAuthStateChanged((user) => {
+    console.log(user)
+    if (user) {
+        console.log('User is logged in');
+    } else {
+        console.log('User is not logged in');
+    }
+});
+
+function showContent(activeTabId, user) {
+    document.querySelectorAll('.tab__content').forEach(function(content) {
+        content.style.display = 'none';
+    });
+    //hvis bruker er logget inn, vis innhold
+    if (user) {
+        document.getElementById(activeTabId).style.display = 'block';
+        document.getElementById('login-message').style.display = 'none';
+    } else {
+        //ikke vis login-melding for tab4
+        if (activeTabId === 'tab__content--4' || activeTabId === 'tab__content--2') {
+            document.getElementById('login-message').style.display = 'none';
+            document.getElementById(activeTabId).style.display = 'block';
+        } else {
+            //hvis bruker ikke er logget inn
+            document.getElementById('login-message').style.display = 'block';
+            document.getElementById(activeTabId).style.display = 'none';
+        }
+        //document.getElementById('login-message').style.display = 'block';
+        //document.getElementById(activeTabId).style.display = 'none';
+    }
+}
+/*midlertidig løsning for tab4*/
+function showContent_Tab4(activeTabId) {
+    document.querySelectorAll('.tab__content').forEach(function(content) {
+        content.style.display = 'none';
+    });
+    document.getElementById('login-message').style.display = 'none';
+    var content = document.querySelector('.veldedighetsinformasjon');
+    if (content) {
+        content.style.display = 'none';
+    }
+    document.getElementById(activeTabId).style.display = 'block';
+}
+
+function clickTab(user){
+    document.querySelector('#tab1').addEventListener('click', function() {
+        showContent('tab__content--1', user);
+    });
+    document.querySelector('#tab2').addEventListener('click', function() {
+        showContent('tab__content--2', user);
+    });
+    document.querySelector('#tab3').addEventListener('click', function() {
+        showContent('tab__content--3', user);
+    });
+    document.querySelector('#tab4').addEventListener('click', function() {
+        showContent_Tab4('tab__content--4', user);
+    });
+}
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      const minBruker = document.querySelector('.minBruker-knapp');
+            
+        if (user) {
+          clickTab(user);
+          minBruker.style.display = 'block';
+          document.querySelector('.minBruker-knapp').addEventListener('click', function(e) {
+            e.preventDefault();
+              document.querySelector('.hamburger-menu').style.width = '250px';
+            });
+                
+            } else {
+                clickTab();
+                minBruker.style.display = 'none';  
+        }});
+    });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('.dropbtn').addEventListener('click', function() {
+      var dropdownContent = document.querySelector('.dropdown-content');
+      if (dropdownContent.style.display === 'none' || dropdownContent.style.display === '') {
+          dropdownContent.style.display = 'block';
+      } else {
+          dropdownContent.style.display = 'none';
+      }
+  });
+
+  document.querySelector('.close-btn').addEventListener('click', function(e) {
+          e.preventDefault();
+          document.querySelector('.hamburger-menu').style.width = '0';
+        });
+  /*document.querySelector('.minBruker-knapp').addEventListener('click', function() {
+      var brukerinfo = document.querySelector('.brukerinfo');
+      if (brukerinfo.style.display === 'none' || brukerinfo.style.display === '') {
+        brukerinfo.style.display = 'block';
+      } else {
+        brukerinfo.style.display = 'none';
+      }
+  });*/
+
+  document.getElementById('logoutButton').addEventListener('click', function() {
+    firebase.auth().signOut().then(function() {
+        console.log('User Logged Out!');
+        document.querySelector('.hamburger-menu').style.width = '0';
+        window.location.href = "index.html";
+    }).catch(function(error) {
+        console.error('Sign Out Error', error);
+    });
+});
+});
+</script>
