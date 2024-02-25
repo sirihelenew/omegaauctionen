@@ -374,7 +374,7 @@
           
           <input type="radio" name="tabs" id="tab2">
           <label for="tab2">
-              <i class="fa-solid fa-bars-progress icon"></i><span>Stretchgoals</span>
+              <i class="fa-solid fa-bars-progress icon"></i><span>Visualisering</span>
           </label>
           <input type="radio" name="tabs" id="tab3">
           <label for="tab3">
@@ -405,23 +405,7 @@
                 <button class="header-button" style="background-color: var(--deeppink); font-size: 20px; font-weight: bold;"><a href="https://forms.gle/bUr6xxT1S7finWZb9" style="color: var(--hvit);">Vil du auksjonere bort noe?</a></button>
           </div>
           <div id="tab__content--2" class="tab__content">
-              <h3 style="color: var(--bebirosa);">Årets stretchgoals</h3>
-              <p style="font-style: italic; font-size: 20px;">inkluderer blant annet..</p>
-              <p><span style="font-weight: bold;">75.798kr:</span> Vi har slått fjorårets sum!</p>
-              <div class="progress-bar">
-                  <div class="progress-bar-fill" style="width: 80%;"></div>
-              </div>
-              <p><span style="font-weight: bold;">50.000kr:</span> Kielder blir med Sport & Spill og løper den årlige Beer<span style="font-weight: bold;">MIL</span>en.</p>
-              <div class="progress-bar">
-                  <div class="progress-bar-fill" style="width: 55%;">
-                  </div>
-              </div>
-              <p><span style="font-weight: bold;">40.000kr:</span> Et år til med gratis kaffe på Loftet.</p>
-              <div class="progress-bar">
-                <div class="progress-bar-fill" style="width: 45%;">
-              </div>
-              </div>
-              </div>
+              <button class="header-button" style="background-color: #A6D1E6;"><a href="live_view.html" style="color: #333;">Visualisering :3</a></button>
           <div id="tab__content--3" class="tab__content">
               <h3 style="color: var(--bebirosa);">Dagens aktiviteter</h3>
               <p style="text-align: left;">Som alltid er OmegaAuctionen en fest i seg selv, med stretchgoals som gjennomføres og masse kule auksjonsobjekter til salgs!</p>
@@ -576,7 +560,7 @@ function showContent(activeTabId, user) {
         document.getElementById('login-message').style.display = 'none';
     } else {
         //ikke vis login-melding for tab4
-        if (activeTabId === 'tab__content--4') {
+        if (activeTabId === 'tab__content--4' || activeTabId === 'tab__content--2') {
             document.getElementById('login-message').style.display = 'none';
             document.getElementById(activeTabId).style.display = 'block';
         } else {
