@@ -17,7 +17,9 @@
             <div class="product-details">
                 <h1 id="itemName"></h2>
                 <p id="itemDescription"></p>
-                <p id="currentBid">Current bid: </p>
+                <br>
+                <p id="currentBid"></p>
+                <p id="currentBidder"> av </p>
                 <br>
                 <form>
                     <input type="number" name="currentBid" placeholder="0 kr">
@@ -75,17 +77,30 @@
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore(app);
         const auctionItemsRef = db.collection("auctionItems");
-
         
         function getItemData() {
             const auctionItemRef = auctionItemsRef.doc(itemId);
             auctionItemRef.get().then((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
-                    document.getElementById('currentBid').textContent = "Current bid: " + data.currentPrice + " kr";
+                    document.getElementById('currentBid').textContent = "Høyeste bud: " + data.currentPrice + " kr";
                     document.getElementById('itemName').textContent = data.itemName;
                     document.getElementById('itemDescription').textContent = data.description;
                     document.getElementById('itemImage').src = data.imageURL;
+
+                    // Get the highest bidder's name
+                    const highestBidderId = data.highestBidder;
+                    const userRef = db.collection("users").doc(highestBidderId);
+                    userRef.get().then((userDoc) => {
+                        if (userDoc.exists) {
+                            const userData = userDoc.data();
+                            document.getElementById('currentBidder').textContent = "til " + userData.firstname + " " + userData.lastname;
+                        } else {
+                            console.log("No such user!");
+                        }
+                    }).catch((error) => {
+                        console.error("Error getting user:", error);
+                    });
                 } else {
                     console.log("No such document!");
                 }

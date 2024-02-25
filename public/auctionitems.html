@@ -12,7 +12,7 @@
     <div class="header">
         <h1>AUKSJONSOBJEKTER</h1>
         <!-- <button class="header-button"><a href="https://forms.gle/Ei1FsLQweSpexLVJA">AUKSJONER BORT NOE HER!</a></button> -->
-        <a class="header-button" href="/newobject.html" target="_blank">LEGG TIL NYTT AUKSJONSOBJEKT</a>
+        <!-- <a class="header-button" href="/newobject.html" target="_blank">LEGG TIL NYTT AUKSJONSOBJEKT</a> -->
     </div>
 
     <div class="container" id = "auctionContainer"></div>
@@ -118,7 +118,7 @@
             usersRef.doc(currentBidderID.textContent).get().then((doc) => {
                 if (doc.exists) {
                     const currBidTitle = document.createElement("h5");
-                    currBidTitle.textContent = "Gjeldende bud";
+                    currBidTitle.textContent = "Høyeste bud";
                     const firstname = doc.data().firstname;
                     const bidderName = document.createElement("small");
                     bidderName.textContent = doc.data().firstname + " " + doc.data().lastname;

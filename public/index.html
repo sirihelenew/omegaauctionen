@@ -344,7 +344,7 @@
 <article class="article">
   <div class="grid__item--1of1 text-center">
       <div class="tabs">
-          <input type="radio" name="tabs" id="tab1">
+          <input type="radio" name="tabs" id="tab1" onclick="redirectToAuctionItems()">
           <label for="tab1">
               <i class="fa-solid fa-gavel icon"></i><span>Auksjonsobjekter</span>
           </label>
@@ -471,6 +471,9 @@
   <!-------------------------------------------------------------------------------->
   <script>
 
+  function redirectToAuctionItems() {
+      window.location.href = "/auctionitems.html";
+  }
  firebaseConfig = {
             apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
             authDomain: "omegaauctionen.firebaseapp.com",
