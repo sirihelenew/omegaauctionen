@@ -351,7 +351,7 @@
           
           <input type="radio" name="tabs" id="tab2">
           <label for="tab2">
-              <i class="fa-solid fa-bars-progress icon"></i><span>Stretchgoals</span>
+              <i class="fa-solid fa-bars-progress icon"></i><span>Visualisering</span>
           </label>
           <input type="radio" name="tabs" id="tab3">
           <label for="tab3">
@@ -376,8 +376,8 @@
               <p>tekst</p>
           </div>
           <div id="tab__content--2" class="tab__content">
-              <h3>Årets stretchgoals!</h3>
-              <p>tekst</p>
+              <!-- <h3>Visualisering</h3> -->
+              <!-- <p>tekst</p>
               <div class="progress-bar">
                   <div class="progress-bar-fill" style="width: 80%;"></div>
               </div>
@@ -389,7 +389,8 @@
               <p>$5000 collected out of $10000</p>
               <p>tekst</p>
               <p>tekst</p>
-              <p>tekst</p>
+              <p>tekst</p> -->
+              <button class="header-button" style="background-color: #A6D1E6;"><a href="live_view.html" style="color: #333;">Visualisering :3</a></button>
           </div>
           <div id="tab__content--3" class="tab__content">
               <h3>Dagens aktiviteter</h3>
@@ -504,7 +505,7 @@ function showContent(activeTabId, user) {
         document.getElementById('login-message').style.display = 'none';
     } else {
         //ikke vis login-melding for tab4
-        if (activeTabId === 'tab__content--4') {
+        if (activeTabId === 'tab__content--4' || activeTabId === 'tab__content--2') {
             document.getElementById('login-message').style.display = 'none';
             document.getElementById(activeTabId).style.display = 'block';
         } else {
