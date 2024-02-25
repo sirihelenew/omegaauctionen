@@ -6,11 +6,32 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/auctionitems.css"> 
+    <link rel="stylesheet" href="css/viewAuctionItem.css"> 
 </head>
 <body>
-    <div class="header">
-        <h1>T</h1>
+    <div class="container">
+        <div class="product"> 
+            <div class="product-image">
+                <img id="itemImage">
+            </div>
+            <div class="product-details">
+                <h1 id="itemName"></h2>
+                <p id="itemDescription"></p>
+                <br>
+                <p id="currentBid"></p>
+                <p id="currentBidder"> av </p>
+                <br>
+                <form>
+                    <input type="number" name="currentBid" placeholder="0 kr">
+                    <button type="submit" id="submitBidButton">Legg til bud</button>
+                </form>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- <div class="header">
+        <h1>Auksjonsobjekt</h1>
         <p id="currentBid">Current bid: </p>
         <form>
             <input type="number" name="currentBid" placeholder="0 kr">
@@ -18,7 +39,16 @@
         </form>
     </div>
 
-
+    <div class="auction-item">
+        <div class="item-image">
+            <img id="itemImage" src="" alt="Item Image">
+        </div>
+        <div class="item-details">
+            <h2 id="itemName"></h2>
+            <p id="itemDescription"></p>
+            <p id="itemCurrentBid"></p>
+        </div>
+    </div> -->
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -47,13 +77,30 @@
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore(app);
         const auctionItemsRef = db.collection("auctionItems");
-
-        const getCurrentBid = () => {
+        
+        function getItemData() {
             const auctionItemRef = auctionItemsRef.doc(itemId);
             auctionItemRef.get().then((doc) => {
                 if (doc.exists) {
-                    const currentBidElement = document.getElementById('currentBid');
-                    currentBidElement.textContent = "Current bid: " + doc.data().currentPrice; + " kr";
+                    const data = doc.data();
+                    document.getElementById('currentBid').textContent = "Høyeste bud: " + data.currentPrice + " kr";
+                    document.getElementById('itemName').textContent = data.itemName;
+                    document.getElementById('itemDescription').textContent = data.description;
+                    document.getElementById('itemImage').src = data.imageURL;
+
+                    // Get the highest bidder's name
+                    const highestBidderId = data.highestBidder;
+                    const userRef = db.collection("users").doc(highestBidderId);
+                    userRef.get().then((userDoc) => {
+                        if (userDoc.exists) {
+                            const userData = userDoc.data();
+                            document.getElementById('currentBidder').textContent = "til " + userData.firstname + " " + userData.lastname;
+                        } else {
+                            console.log("No such user!");
+                        }
+                    }).catch((error) => {
+                        console.error("Error getting user:", error);
+                    });
                 } else {
                     console.log("No such document!");
                 }
@@ -61,7 +108,8 @@
                 console.error("Error getting document:", error);
             });
         }
-        getCurrentBid();
+
+        getItemData();
 
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {

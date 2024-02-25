@@ -59,7 +59,8 @@
 
             const itemName = document.querySelector('input[name="itemName"]').value;
             const description = document.querySelector('textarea[name="description"]').value;
-            const startingPrice = parseFloat(document.querySelector('input[name="startingPrice"]').value);
+            const startingPriceInput = document.querySelector('input[name="startingPrice"]').value;
+            const startingPrice = parseFloat(startingPriceInput) || 0;
             const picture = document.querySelector('input[name="picture"]').files[0];
             const submitButton = document.getElementById('submitButton');
 
@@ -78,13 +79,12 @@
                         return snapshot.ref.getDownloadURL(); // Get URL of uploaded file
                     })
                     .then((downloadURL) => {
-                        imageURL = downloadURL; // Save the URL of the uploaded picture
-                        // Save form data including picture URL to Firestore
+                        imageURL = downloadURL;
                         return db.collection("auctionItems").add({
                             itemName,
                             description,
                             startingPrice,
-                            imageURL, // Save the URL to imageURL attribute
+                            imageURL,
                             currentPrice: startingPrice,
                             highestBidder: "None"
                         });
