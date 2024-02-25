@@ -91,7 +91,7 @@
 
             let descriptionText = item.data().description;
             if (descriptionText.length > 0) {
-                descriptionText = descriptionText.length > 50 ? descriptionText.substring(0, 50) + "..." : descriptionText;
+                descriptionText = descriptionText.length > 100 ? descriptionText.substring(0, 100) + "..." : descriptionText;
             } else {
                 descriptionText = descriptionText + " "*(53-descriptionText.length); // Default text if description is empty
             }
