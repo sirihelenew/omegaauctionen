@@ -1,0 +1,127 @@
+:root {
+    --jub-lilla: #662d91;
+    --jub-oransje: #e36a36;
+    --hvit: #f4f4f4;
+    --grå: #333;
+    --deeppink: #FF407D;
+    --deepblue: #0C359E;
+    --skyblue: #4CB9E7;
+    --teal: #33BBC5;
+    --bebiblå: #7BD3EA;
+    --bebirosa: #FF9EAA;
+}
+body {
+    background-color: var(--hvit);
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+}
+
+#header {    
+    box-shadow: 0px 0px 1px 0px rgba(170,170,170,1) !important;
+    background-color: var(--jub-lilla);
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 0;
+    text-align: center;
+}
+h1 {color: var(--hvit); font-size: 50px; }
+
+h2 {color: #f4f4f4; font-size: 30px; font-family: 'Roboto', sans-serif;}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#boysBtn, #girlsBtn {
+    color: var(--grå);
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 5px;
+}
+
+.hidden {
+    display: none;
+}
+
+li {
+    margin: 10px;
+}
+
+#content {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.personInfo {
+    display: none;
+}
+
+#personBtnsContainer {
+    grid-template-columns: repeat(2, 1fr);
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    grid-gap: 20px;
+}
+.personBtnsContainer {
+    grid-template-columns: repeat(2, 1fr);
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    grid-gap: 20px;
+    display: grid;
+}
+
+#personCardContainer {
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.personCardContainer {
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.column {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+.personBtn {
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--jub-lilla);
+    color: var(--hvit);
+}
+.personCard {
+    margin: 10px;
+    padding: 10px;
+    border: 3px solid var(--jub-lilla);
+    border-radius: 5px;
+    width: 300px;
+    justify-content: center;
+}
+.bidBtn, .closeBtn {
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--jub-lilla);
+    color: var(--hvit);
+}
