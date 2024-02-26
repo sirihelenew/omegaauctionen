@@ -60,6 +60,26 @@
 <body>
     <h1>Hei Kielder <i class="fa-solid fa-heart" style="color: #FF407D;"></i><span style="font-size: 30px;"><br>Dere er best! Keep slaying!</span></h1>
     <br>
-    <button class="header-button"><p>Kjøhh vandrebar</p></button> <!--Må linke til DB-->
+    <button class="header-button" id="sellBongBtn"><p>Kjøhh vandrebar</p></button> <!--Må linke til DB-->
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
+        authDomain: "omegaauctionen.firebaseapp.com",
+        databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
+        projectId: "omegaauctionen",
+        storageBucket: "omegaauctionen.appspot.com",
+        messagingSenderId: "612432199946",
+        appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
+        measurementId: "G-NLP4T6TXHL"
+      };
+      
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    var db = firebase.firestore();
+    </script>
+    <script src="kielder.js"></script>
 </body>
 </html>
