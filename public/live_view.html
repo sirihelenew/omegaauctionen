@@ -27,18 +27,13 @@
                 borderWidth: 1,
                 fill: true,
             },
-            { label: "Stretch goal 1", data: [3000, 3000] },
-            { label: "Stretch goal 1", data: [7000, 7000] }
+            { label: "Icerace med Soscom og Blaestcom", data: [25000, 25000] },
+            { label: "Jubcom synger på sillis", data: [30000, 30000] },
+            { label: "Gratis kaffe ett år til", data: [40000, 40000] },
+            { label: "Sport&Spill og PhaestCom har Oreo race", data: [45000, 45000] },
+            { label: "Marius tatoverer 105 års logoen", data: [60105, 60105] },
+            { label: "HS spiller ludøl", data: [75000, 75000] },
         ];
-
-        const classSpendages = {
-            "first": 0,
-            "second": 0,
-            "third": 0,
-            "fourth": 0,
-            "fifth": 0,
-            "other":0,
-        };
     </script>
     <script>
         // MASSIVE credits to haakonbae: 
@@ -96,7 +91,7 @@
                     x: {
                         display: true,
                         min: 0,
-                        max: 10000,
+                        max: 100000,
                     },
                     y: {
                         beginAtZero: true,
@@ -125,25 +120,30 @@
 
         itemsRef.onSnapshot(async () => {
             try {
-
                 const updateData = async (auctionItemDoc) => {
                     try {
-                        const userDoc = await usersRef.doc(auctionItemDoc.data().highestBidder).get();
+                        if (auctionItemDoc.data().fixedPrice) {
+                            for (const buyer of auctionItemDoc.data().buyers) {
+                                let user = await usersRef.doc(buyer).get();
+                                const fullName = `${user.data().firstname} ${user.data().lastname}`;
 
-                        if (userDoc.exists) {
-                            const fullName = `${userDoc.data().firstname} ${userDoc.data().lastname}`;
-
-                            if (spenders[fullName] === undefined) {
-                                spenders[fullName] = auctionItemDoc.data().currentPrice;
-                            } else {
-                                spenders[fullName] += auctionItemDoc.data().currentPrice;
+                                spenders[fullName] = (spenders[fullName] || 0) + auctionItemDoc.data().currentPrice;
+                                total += auctionItemDoc.data().currentPrice;
+                                classSpendages[user.data().grade] += auctionItemDoc.data().currentPrice;
                             }
-
-                            total += auctionItemDoc.data().currentPrice;
-                            classSpendages[userDoc.data().grade] += auctionItemDoc.data().currentPrice;
                         } else {
-                            console.log("User not found. Most likely no one has placed a bid on this item yet.");
-                        }   
+                            const userDoc = await usersRef.doc(auctionItemDoc.data().highestBidder).get();
+
+                            if (userDoc.exists) {
+                                const fullName = `${userDoc.data().firstname} ${userDoc.data().lastname}`;
+
+                                spenders[fullName] = (spenders[fullName] || 0) + auctionItemDoc.data().currentPrice;                                
+                                total += auctionItemDoc.data().currentPrice;
+                                classSpendages[userDoc.data().grade] += auctionItemDoc.data().currentPrice;
+                            } else {
+                                console.log("Buyer not found. Most likely no one has placed a bid on this item yet.");
+                            } 
+                        }
                     } catch (error) {
                         console.error("Error updating data: ", error);
                     }
@@ -171,6 +171,14 @@
                 let data = [];
                 let labels = [];
                 let spenders = {}
+                const classSpendages = {
+                    "first": 0,
+                    "second": 0,
+                    "third": 0,
+                    "fourth": 0,
+                    "fifth": 0,
+                    "other":0,
+                };
 
                 const querySnapshot = await itemsRef.get();
                 const promises = [];
