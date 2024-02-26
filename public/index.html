@@ -88,6 +88,11 @@
             color: var(--teal);
             font-weight: bold;
         }
+        .header-button a {
+            color: var(--hvit);
+            text-decoration: none;
+            font-size: 30px;
+        }
 
         nav {
             background-color: #f4f4f4;
@@ -327,9 +332,9 @@
         <a href="#" class="minBruker-knapp"><i class="fa-solid fa-user"></i> Min bruker</a>
         <div class="hamburger-menu">
           <button class="close-btn"><i class="fa-solid fa-angle-left"></i> Tilbake</button>
-          <a href="#"><i class="fa-solid fa-heart"></i> Mine favoritter</a>
+          <!--<a href="#"><i class="fa-solid fa-heart"></i> Mine favoritter</a>
           <a href="test.html"><i class="fa-solid fa-gavel"></i> Mine bud</a>
-          <a href="#"><i class="fa-solid fa-heart"></i> Mine favoritter</a>
+          <a href="#"><i class="fa-solid fa-heart"></i> Mine favoritter</a>-->
           <a href="#" id="logoutButton"><i class="fa-solid fa-right-from-bracket"></i> Logg ut</a>
         </div>
         <li class="dropdown">
@@ -356,7 +361,7 @@
     <h1 style="font-size: 30 px; font-family: 'Roboto';">27.02.24</h1>
   <!--<h2>27.februar</h2>-->
   <!--<h2>Ny bruker?</h2>-->
-  <button class="header-button"><a href="users-test.html">Logg inn her</a></button>
+  <button class="header-button" style="text-decoration: none; background-color: var(--jub-oransje);"><a href="users-test.html" style="text-decoration: none;">Logg inn her</a></button>
 </div>
 
 <div id="header" style="background-color: var(--hvit); padding: 1px;">
@@ -425,11 +430,16 @@
           <div id="tab__content--3" class="tab__content">
               <h3 style="color: var(--bebirosa);">Dagens aktiviteter</h3>
               <p style="text-align: left;">Som alltid er OmegaAuctionen en fest i seg selv, med stretchgoals som gjennomføres og masse kule auksjonsobjekter til salgs!</p>
-              <p style="text-align: left;"><span style="font-weight: bold;">Kielder</span> stiller selvfølgelig med vandrebar! <i class="fa-solid fa-beer-mug-empty" style="color: var(--deeppink);"></i></p>
-              <p style="text-align: left;">I tillegg blir det flere muligheter for å vinne <span style="font-weight: bold;">premier</span>, inkludert bl.a. festivalpass til Festningen og
-              gavekort på valgfri massasje hos Trondheim Spa.</p>
-              <p><p style="text-align: left;">Det kommer mer informasjon om dagsplan - viktigst av alt er at dette er et <span style="font-weight: bold; color: var(--deeppink);">morsomt</span> arrangement, med 
-              hovedfokus på å gi til veldedighet - det beste av begge verdener! </p>
+              <p style="text-align: left; color: var(--deeppink);"><span style="font-weight: bold;">Grov dagsplan:</span> </p>
+              <p style="text-align: left;"><span style="font-weight: bold;">17:15</span> Baren åpner! <i class="fa-solid fa-beer-mug-empty"></i></p>
+              <p style="text-align: left;"><span style="font-weight: bold;">17:45</span> Introduksjon v/konferansierer og visning av Beermile-teaser!</p>
+              <p style="text-align: left;"><span style="font-weight: bold;">18:00</span> Liveauksjon</p>
+              <p style="text-align: left;"><span style="font-weight: bold;">18:30</span> Innslag og aktivitet</p>
+              <p style="text-align: left;"><span style="font-weight: bold;">18:50</span> Barpause</p>
+              <p style="text-align: left;"><span style="font-weight: bold;">19:10</span> Liveauksjon + innslag</p>
+              <p style="text-align: left;"><span style="font-weight: bold;">19:30-20:30</span> Bar-, pizza- og Loftetpause <i class="fa-regular fa-face-smile"></i></p>
+              <p style="text-align: left;"><span style="font-weight: bold;">20:45</span> Beermilevideo!</p>
+              <p style="text-align: left;"><span style="font-weight: bold;">21:00</span> Liveauksjon</p>
           </div>
           <div id="tab__content--4" class="tab__content">
               <h3 style="color: var(--bebirosa);">Veldedighets-<wbr>informasjon</h3>
@@ -446,8 +456,13 @@
   <h1>Årets sponsorer</h1>
   <ul class="bedrifter">
     <li class="bedrifter__obj">
+      <a href="https://www.nordicsemi.com/">
+        <img src="images/nordic.svg" alt="" />
+      </a>
+    </li>
+    <li class="bedrifter__obj">
       <a href="https://www.festningen.no/">
-        <img src="images/festningen.png" alt="" style="width: 200px;"/>
+        <img src="images/festningen.png" alt="" />
       </a>
     </li>
     <li class="bedrifter__obj">
@@ -535,6 +550,47 @@
               <img src="images/studio26.png" alt="" />
             </a>
           </li>
+          <li class="bedrifter__obj">
+            <a href="https://www.diskoteket.no/">
+              <img src="images/diskoteket.png" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://sumorestaurant.no/">
+              <img src="images/sumo.png" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://www.brunvoll.no/">
+              <img src="images/brunvoll-logo.jpg" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://www.bdo.no/nb-no/home-no">
+              <img src="images/bdo.png" alt="" style="width: 60%;"/>
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://computas.com/">
+              <img src="images/computas.svg" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://norconsult.no/">
+              <img src="images/norconsult.jpeg" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://www.tratec.no/">
+              <img src="images/tratec.svg" alt="" />
+            </a>
+          </li>
+          <li class="bedrifter__obj">
+            <a href="https://www.microchip.com/">
+              <img src="images/microchip.avif" alt="" />
+            </a>
+          </li>
+          
   </ul>
 </main>
 <!-------------------------------------------------------------------------------->
@@ -556,11 +612,14 @@
     firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
+const loginButton = document.querySelector('.header-button');
+
 
 auth.onAuthStateChanged((user) => {
     console.log(user)
     if (user) {
         console.log('User is logged in');
+        loginButton.style.display = 'none';
     } else {
         console.log('User is not logged in');
     }
