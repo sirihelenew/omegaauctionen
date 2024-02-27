@@ -1,0 +1,52 @@
+
+
+<!--Test for å lese fra database-->
+
+
+<!DOCTYPE html>
+<html lang="no">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Page Title</title>
+    <!-- Include Firebase from CDN -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <!--<script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>-->
+    <script>
+        const firebaseConfig = {
+        apiKey: "AIzaSyBQdYPW-nMzPxGbCKtJ9mRNYLpv9uDcY_k",
+        authDomain: "testproject-43fdd.firebaseapp.com",
+        databaseURL: "https://testproject-43fdd-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "testproject-43fdd",
+        storageBucket: "testproject-43fdd.appspot.com",
+        messagingSenderId: "1059098419352",
+        appId: "1:1059098419352:web:e7d25fdb8e54da1a45b0ed",
+        measurementId: "G-WH8X3H8YHZ"
+        };
+        
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(app);
+    </script>
+</head>
+<body>
+    <div id="users-list">Loading users...</div>
+
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const usersRef = db.collection('users');
+            usersRef.get().then((querySnapshot) => {
+                const usersList = document.getElementById('users-list');
+                usersList.innerHTML = ''; 
+                querySnapshot.forEach((doc) => {
+                    const userData = doc.data();
+                    usersList.innerHTML += `<p>${userData.fornavn} ${userData.etternavn}</p>`;
+                });
+            }).catch((error) => {
+                console.error("Error fetching users: ", error);
+            });
+        });
+    </script>
+</body>
+</html>

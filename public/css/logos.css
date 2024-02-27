@@ -1,0 +1,19 @@
+.bedrifter {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-gap: 1rem;
+}
+
+.bedrifter__obj {
+    background: #f4f4f4;
+}
+
+.bedrifter__obj::marker {
+    content: none;
+}
+.bedrifter__obj img {
+    width: 130px;
+    height: 75px;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+}
