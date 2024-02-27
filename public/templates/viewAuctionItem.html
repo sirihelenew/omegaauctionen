@@ -24,6 +24,7 @@
                     <p id="currentBidder"> av </p>
                     <input type="number" name="currentBid" placeholder="0 kr">
                     <button type="submit" id="submitBidButton">Legg til bud</button>
+                    <h4> Alle bud er bindende. </p>
                 </form>
                 <h3 id="liveAuctionMessage" style="display: none;">Dette objektet auksjoneres live.</h3>
                 <h4 id="fixedItemMessage" style="display: none;">Dette objektet selges til fast pris.</h4><br>
@@ -220,16 +221,24 @@
                         return;
                     }
                     if (currentBid > currentPrice) {
-                        auctionItemRef.update({
-                            currentPrice: currentBid,
-                            highestBidder: userId
+                        db.collection("biddingHistory").add({
+                            itemId: itemId,
+                            bidderId: userId,
+                            bidAmount: currentBid,
+                            bidTime: firebase.firestore.FieldValue.serverTimestamp()
                         }).then(() => {
-                            console.log("Document successfully updated!");
-                            getItemData();
-                            userRef.update({
-                                currentBids: firebase.firestore.FieldValue.arrayUnion(itemId)
+                            auctionItemRef.update({
+                                currentPrice: currentBid,
+                                highestBidder: userId
                             }).then(() => {
-                                console.log("Document successfully updated!");
+                                getItemData();
+                                userRef.update({
+                                    currentBids: firebase.firestore.FieldValue.arrayUnion(itemId)
+                                }).then(() => {
+                                    console.log("Document successfully updated!");
+                                }).catch((error) => {
+                                    console.error("Error updating document: ", error);
+                                });
                             }).catch((error) => {
                                 console.error("Error updating document: ", error);
                             });
@@ -246,16 +255,6 @@
                 console.error("Error getting document:", error);
             });
         }
-
-        document.querySelector('form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            updateBid();
-            const submitButton = document.getElementById('submitBidButton');
-            submitButton.innerText = "Bud lagt til!";
-            setTimeout(function() {
-                submitButton.innerText = "Legg til bud";
-            }, 3000);
-        });
 
         function buyNow() {
             const user = firebase.auth().currentUser;
