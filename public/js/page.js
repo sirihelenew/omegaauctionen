@@ -22,7 +22,7 @@ export default function Page() {
             <ul>
             {users.map((user) => (
                     // Assuming user object has a 'firstname' and 'lastname' field
-                    <li key={user.id}>{user.firstname} {user.lastname}</li>
+                    <li key={user.id}>{user.fornavn} {user.etternavn}</li>
                 ))}
             </ul>
         </div>

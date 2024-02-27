@@ -152,8 +152,8 @@
                 //     });
 
                 return db.collection("users").doc(user.uid).set({
-                    firstname,
-                    lastmame,
+                    fornavn: firstname,
+                    etternavn: lastmame,
                     email,
                     grade
                 });

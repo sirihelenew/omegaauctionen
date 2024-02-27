@@ -131,7 +131,7 @@
                         const userDoc = await usersRef.doc(auctionItemDoc.data().highestBidder).get();
 
                         if (userDoc.exists) {
-                            const fullName = `${userDoc.data().firstname} ${userDoc.data().lastname}`;
+                            const fullName = `${userDoc.data().fornavn} ${userDoc.data().etternavn}`;
 
                             if (spenders[fullName] === undefined) {
                                 spenders[fullName] = auctionItemDoc.data().currentPrice;

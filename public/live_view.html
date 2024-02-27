@@ -127,7 +127,7 @@
                         if (auctionItemDoc.data().fixedPrice) {
                             for (const buyer of auctionItemDoc.data().buyers) {
                                 let user = await usersRef.doc(buyer).get();
-                                const fullName = `${user.data().firstname} ${user.data().lastname}`;
+                                const fullName = `${user.data().fornavn} ${user.data().etternavn}`;
 
                                 spenders[fullName] = (spenders[fullName] || 0) + auctionItemDoc.data().currentPrice;
                                 total += auctionItemDoc.data().currentPrice;
@@ -137,7 +137,7 @@
                             const userDoc = await usersRef.doc(auctionItemDoc.data().highestBidder).get();
 
                             if (userDoc.exists) {
-                                const fullName = `${userDoc.data().firstname} ${userDoc.data().lastname}`;
+                                const fullName = `${userDoc.data().fornavn} ${userDoc.data().etternavn}`;
 
                                 spenders[fullName] = (spenders[fullName] || 0) + auctionItemDoc.data().currentPrice;                                
                                 total += auctionItemDoc.data().currentPrice;
