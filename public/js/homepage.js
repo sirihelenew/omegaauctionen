@@ -13,45 +13,6 @@ const loginButton = document.querySelector('.header-button');
 const db = firebase.firestore();
 
 
-// auth.onAuthStateChanged((user) => {
-//   console.log(user)
-//   if (user) {
-//     console.log('User is logged in');
-//     loginButton.style.display = 'none';
-
-//     db.collection('auctionItems').onSnapshot((snapshot) => {
-//       snapshot.docs.forEach((doc) => {
-//         const auctionItem = doc.data();
-//         const buyers = auctionItem.buyers;
-
-//         // Check if the current user's ID is in the buyers array
-//         if (Array.isArray(buyers) && buyers.includes(user.uid)) {
-//           // The current user is a buyer for this auction item
-//           console.log(`User ${user.uid} is a buyer for auction item ${doc.id}`);
-//         }
-
-//         if (Array.isArray(buyers) && buyers.length > 0 && buyers[buyers.length - 1] === user.uid) {
-//           // Display the auction item under "My active bids"
-//           displayActiveBid(auctionItem);
-//         }
-
-//         if (Array.isArray(buyers)) {
-//           console.log(buyers.length);
-//         }
-
-//         // Check if the last buyer is the current user
-//         if (buyers.length > 0 && buyers[buyers.length - 1] === user.uid) {
-//           // Display the auction item under "My active bids"
-//           displayActiveBid(auctionItem);
-//         }
-//       });
-//     });
-//   } else {
-//     console.log('User is not logged in');
-//   }
-// });
-
-// Declare the activeBidsContainer variable outside of the auth.onAuthStateChanged function
 const activeBidsContainer = document.getElementById('activeBids');
 
 auth.onAuthStateChanged((user) => {
@@ -182,18 +143,6 @@ showContent_Tab4('tab__content--4', user);
 //   });
 // });
 
-// function displayActiveBid(auctionItem) {
-//   // Create a new div element
-//   const div = document.createElement('div');
-
-//   // Set the content of the div
-//   div.textContent = `Objekt: ${auctionItem.itemName}, Sum: ${auctionItem.currentPrice}`;
-
-//   // Append the div to the active bids container
-//   const activeBidsContainer = document.getElementById('activeBids');
-//   activeBidsContainer.appendChild(div);
-// }
-
 document.addEventListener('DOMContentLoaded', function() {
   firebase.auth().onAuthStateChanged(function(user) {
     const minBruker = document.querySelector('.minBruker-knapp');
@@ -254,13 +203,202 @@ function displayActiveBid(auctionItem) {
   // Create a new div element
   const div = document.createElement('div');
 
+  
+  div.style.fontFamily = 'Roboto';
   // Set the content of the div
-  div.textContent = `Objekt: ${auctionItem.itemName}, Sum: ${auctionItem.currentPrice}`;
+  div.innerHTML = `Objekt: <strong>${auctionItem.itemName}</strong>, Sum: <strong>${auctionItem.currentPrice}</strong>`;
 
   // Append the div to the active bids container
   const activeBidsContainer = document.getElementById('activeBids');
   activeBidsContainer.appendChild(div);
 }
+
+
+// function displayActiveBid(auctionItem) {
+//   // Create a new div element
+//   const div = document.createElement('div');
+
+//   // Set the content of the div
+//   div.textContent = `Objekt: ${auctionItem.itemName}, Sum: ${auctionItem.currentPrice}`;
+
+//   // Append the div to the active bids container
+//   const activeBidsContainer = document.getElementById('activeBids');
+//   activeBidsContainer.appendChild(div);
+// }
+
+
+
+// function displayActiveBid(auctionItem) {
+//   // Create a new div element
+//   const div = document.createElement('div');
+
+//   // Set the content of the div
+//   div.textContent = `Objekt: ${auctionItem.itemName}, Sum: ${auctionItem.currentPrice}`;
+
+//   // Append the div to the active bids container
+//   const activeBidsContainer = document.getElementById('activeBids');
+//   activeBidsContainer.appendChild(div);
+// }
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   firebase.auth().onAuthStateChanged(function(user) {
+//     const minBruker = document.querySelector('.minBruker-knapp');
+//     const db = firebase.firestore();
+    
+//     if (user) {
+//       clickTab(user);
+//       minBruker.style.display = 'block';
+
+//       document.querySelector('.minBruker-knapp').addEventListener('click', function(e) {
+//         e.preventDefault();
+//         document.querySelector('.hamburger-menu').style.width = '250px';
+//       });
+
+//       document.querySelector('#myBidsButton').addEventListener('click', function(e) {
+//         e.preventDefault();
+
+//         // Create a new div element for the card
+//         const card = document.createElement('div');
+//         card.id = 'activeBids';
+//         card.style.display = 'none';
+
+//         // Append the card to the card container
+//         const cardContainer = document.getElementById('cardContainer');
+//         cardContainer.innerHTML = ''; // Clear the container
+//         cardContainer.appendChild(card);
+
+//         db.collection('auctionItems').onSnapshot((snapshot) => {
+//           // snapshot.docs.forEach((doc) => {
+//           //   const auctionItem = doc.data();
+//           //   const highestBidder = auctionItem.highestBidder;
+//           const activeBidsContainer = document.getElementById('activeBids');
+//           activeBidsContainer.innerHTML = '';
+
+//           snapshot.docs.forEach((doc) => {
+//             const auctionItem = doc.data();
+//             const highestBidder = auctionItem.highestBidder;
+
+
+//             // Check if the current user's ID is equal to the highestBidder string
+//             if (highestBidder === user.uid) {
+//               // Display the auction item under "My active bids"
+//               displayActiveBid(auctionItem);
+//             }
+//           });
+//         });
+
+//         card.style.display = 'block';
+//       });
+//     } else {
+//       clickTab();
+//       minBruker.style.display = 'none';  
+//     }
+//   });
+// });
+
+// function displayActiveBid(auctionItem) {
+//   // Create a new div element
+//   const div = document.createElement('div');
+
+//   // Set the content of the div
+//   div.textContent = `Objekt: ${auctionItem.itemName}, Sum: ${auctionItem.currentPrice}`;
+
+//   // Append the div to the active bids container
+//   const activeBidsContainer = document.getElementById('activeBids');
+//   activeBidsContainer.appendChild(div);
+// }
+
+// function displayActiveBid(auctionItem) {
+//   // Create a new div element
+//   const div = document.createElement('div');
+
+//   const cardLink = document.createElement("a");
+//   cardLink.href = `viewAuctionItem.html?itemId=${auctionItem.id}`;
+//   cardLink.classList.add("cardLink"); // Add the class
+//   cardLink.appendChild(div);
+
+//   // Set the content of the div
+//   div.textContent = `Objekt: ${auctionItem.itemName}, Sum: ${auctionItem.currentPrice}`;
+
+//   // Append the div to the active bids container
+//   const activeBidsContainer = document.getElementById('activeBids');
+//   activeBidsContainer.appendChild(div);
+// }
+
+// document.addEventListener('DOMContentLoaded', function() {
+//   firebase.auth().onAuthStateChanged(function(user) {
+//     const minBruker = document.querySelector('.minBruker-knapp');
+//     const db = firebase.firestore();
+    
+//     if (user) {
+//       clickTab(user);
+//       minBruker.style.display = 'block';
+
+//       document.querySelector('.minBruker-knapp').addEventListener('click', function(e) {
+//         e.preventDefault();
+//         document.querySelector('.hamburger-menu').style.width = '250px';
+//       });
+
+//       document.querySelector('#myBidsButton').addEventListener('click', function(e) {
+//         e.preventDefault();
+
+//         // Create a new div element for the card
+//         const card = document.createElement('div');
+//         card.id = 'activeBids';
+//         card.style.display = 'none';
+
+//         // Append the card to the card container
+//         const cardContainer = document.getElementById('cardContainer');
+//         cardContainer.innerHTML = ''; // Clear the container
+//         cardContainer.appendChild(card);
+
+//         db.collection('auctionItems').onSnapshot((snapshot) => {
+//           // Clear the activeBidsContainer at the beginning of the callback function
+//           const activeBidsContainer = document.getElementById('activeBids');
+//           activeBidsContainer.innerHTML = '';
+
+//           snapshot.docs.forEach((doc) => {
+//             const item = doc.data();
+//             const highestBidder = item.highestBidder;
+
+//             // Check if the current user's ID is equal to the highestBidder string
+//             if (highestBidder === user.uid) {
+//               console.log("Displaying active bid for item: ", item); // Debugging line
+//               // Display the auction item under "My active bids"
+//               displayActiveBid(item);
+//             }
+//           });
+//         });
+
+//         card.style.display = 'block';
+//       });
+//     } else {
+//             clickTab();
+//             minBruker.style.display = 'none';  
+//           }
+//         });
+//       });
+
+
+
+//       function displayActiveBid(item) {
+//         console.log("In displayActiveBid function, auctionItem: ", item); // Debugging line
+
+//         // Create a new div element
+//         const div = document.createElement('div');
+
+//         const cardLink = document.createElement("a");
+//         cardLink.href = `../templates/viewAuctionItem.html?itemId=${item.id}`;
+//         cardLink.classList.add("cardLink"); // Add the class
+//         cardLink.appendChild(div);
+
+//         // Set the content of the div
+//         div.textContent = `Objekt: ${item.itemName}, Sum: ${item.currentPrice}`;
+
+//         // Append the div to the active bids container
+//         const activeBidsContainer = document.getElementById('activeBids');
+//         activeBidsContainer.appendChild(cardLink); // Append the cardLink instead of the div
+//       }
 
 document.addEventListener('DOMContentLoaded', function() {
 document.querySelector('.dropbtn').addEventListener('click', function() {

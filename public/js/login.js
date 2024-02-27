@@ -15,7 +15,7 @@ document.getElementById('login-tab').addEventListener('click', function() {
 document.getElementById('register-tab').addEventListener('click', function() {
     document.getElementById('login-form').style.display = 'none';
     document.getElementById('login-tekst').style.display = 'none';
-    document.getElementById('info-knapp').style.display = 'inline-block';
+    //document.getElementById('info-knapp').style.display = 'inline-block';
     document.getElementById('register-form').style.display = 'block';
     document.getElementById('registration-tekst').style.display = 'block';
     this.className = 'active';
