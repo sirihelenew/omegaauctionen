@@ -134,11 +134,43 @@
 
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-            // User is signed in
-            console.log("User is logged in:", user);
+                // User is signed in
+                console.log("User is logged in:", user);
+                document.getElementById('submitBidButton').disabled = false;
+                document.getElementById('buyNowButton').disabled = false;
             } else {
-            // No user is signed in
-            console.log("User is not logged in.");
+                // No user is signed in
+                console.log("User is not logged in.");
+                document.getElementById('submitBidButton').disabled = true;
+                document.getElementById('buyNowButton').disabled = true;
+                // Redirect to login page
+                window.location.href = 'users-test.html'; // Replace 'login.html' with your login page URL
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const user = firebase.auth().currentUser;
+            if (user) {
+                updateBid();
+                const submitButton = document.getElementById('submitBidButton');
+                submitButton.innerText = "Bud lagt til!";
+                setTimeout(function() {
+                    submitButton.innerText = "Legg til bud";
+                }, 3000);
+            } else {
+                // Redirect to login page
+                window.location.href = 'users-test.html'; // Replace 'users-test.html' with your login page URL
+            }
+        });
+
+        document.getElementById('buyNowButton').addEventListener('click', function() {
+            const user = firebase.auth().currentUser;
+            if (user) {
+                buyNow();
+            } else {
+                // Redirect to login page
+                window.location.href = 'users-test.html'; // Replace 'users-test.html' with your login page URL
             }
         });
 
