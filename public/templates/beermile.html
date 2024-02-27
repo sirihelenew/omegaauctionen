@@ -9,9 +9,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <!--ikoner-->
     <script src="https://kit.fontawesome.com/c110f170bd.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
-    <link rel="stylesheet" href="css/beermile.css">
+    <!--CSS-->
+    <link rel="stylesheet" href="../css/beermile.css">
 </head>
 <body>
     <div id="header">
@@ -39,24 +41,9 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
-        authDomain: "omegaauctionen.firebaseapp.com",
-        databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
-        projectId: "omegaauctionen",
-        storageBucket: "omegaauctionen.appspot.com",
-        messagingSenderId: "612432199946",
-        appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
-        measurementId: "G-NLP4T6TXHL"
-      };
-      
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-    var db = firebase.firestore();
-    </script>
-    <script src="beermile.js"></script>
-    <script src="beermilebet.js"></script>
-    
+    <script src="../js/firebaseConfig.js"></script>
+    <script src="../js/beermile.js"></script>
+    <script src="../js/beermilebet.js"></script>
+    <script src="../js/votes.js"></script>
 </body>
 </html>

@@ -1,23 +1,22 @@
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+// Import the functions you need from the SDKs you need
+//import { initializeApp } from "firebase/app";
+//import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+firebaseConfig = {
+  apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
+  authDomain: "omegaauctionen.firebaseapp.com",
+  databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
+  projectId: "omegaauctionen",
+  storageBucket: "omegaauctionen.appspot.com",
+  messagingSenderId: "612432199946",
+  appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
+  measurementId: "G-NLP4T6TXHL"
+};
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyBQdYPW-nMzPxGbCKtJ9mRNYLpv9uDcY_k",
-        authDomain: "testproject-43fdd.firebaseapp.com",
-        databaseURL: "https://testproject-43fdd-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "testproject-43fdd",
-        storageBucket: "testproject-43fdd.appspot.com",
-        messagingSenderId: "1059098419352",
-        appId: "1:1059098419352:web:e7d25fdb8e54da1a45b0ed",
-        measurementId: "G-WH8X3H8YHZ"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-
-        // Initialize Firestore Database
-        const db = getFirestore(app);
-        
-        export { db };
-    
+// Initialize Firebase
+// const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);

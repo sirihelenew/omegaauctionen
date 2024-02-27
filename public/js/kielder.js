@@ -1,4 +1,8 @@
 // Funksjon for å håndtere salg av en bong
+
+firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
+
 function sellBong() {
     const bongPrice = 200; // fast pris for en bong
     const db = firebase.firestore();

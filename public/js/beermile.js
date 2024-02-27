@@ -1,3 +1,7 @@
+firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
+
+
 var boysData = [
     { name: 'Torodd Solberg', info: 'Komité: Fadderstyret', fornavn: 'Torodd', id:'8TH3HO4XvOG4IUDVXmXS' },
     { name: 'Elias Bostrøm', info: 'Komité: Sport & Spill', fornavn: 'Elias', id:'9SNmFM0uruHtkHbiljHr'},

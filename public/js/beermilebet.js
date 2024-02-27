@@ -1,17 +1,9 @@
 
 
-// const firebaseConfig = {
-//     apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
-//     authDomain: "omegaauctionen.firebaseapp.com",
-//     databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
-//     projectId: "omegaauctionen",
-//     storageBucket: "omegaauctionen.appspot.com",
-//     messagingSenderId: "612432199946",
-//     appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
-//     measurementId: "G-NLP4T6TXHL"
-//   };
-//     firebase.initializeApp(firebaseConfig);
-//     var db = firebase.firestore();
+
+firebase.initializeApp(firebaseConfig);
+var db = firebase.firestore();
+
 var bidBtns = document.querySelectorAll('.bidBtn');
     bidBtns.forEach(function(btn) {
         btn.addEventListener('click', function() {
@@ -21,7 +13,76 @@ var bidBtns = document.querySelectorAll('.bidBtn');
         });
     });
 
-// function placeBet() {
+function placeBet() {
+    const user = firebase.auth().currentUser;
+  
+    if (!user) {
+      alert("You must be logged in to place a bet.");
+      return;
+    }
+  
+    const winMaleCheckbox = document.querySelector('input[name="winMale"]:checked');
+    console.log('winMaleCheckbox:', winMaleCheckbox);
+  
+    const winFemaleCheckbox = document.querySelector('input[name="winFemale"]:checked');
+    console.log('winFemaleCheckbox:', winFemaleCheckbox);
+  
+    const pukeFirstCheckbox = document.querySelector('input[name="pukeFirst"]:checked');
+    console.log('pukeFirstCheckbox:', pukeFirstCheckbox);
+  
+    const bets = {
+      vinnerGutt: winMaleCheckbox ? { runnerId: winMaleCheckbox.closest('.personCard').querySelector('.bidBtn').dataset.runnerId } : null,
+      vinnerJente: winFemaleCheckbox ? { runnerId: winFemaleCheckbox.closest('.personCard').querySelector('.bidBtn').dataset.runnerId } : null,
+      spyr: pukeFirstCheckbox ? { runnerId: pukeFirstCheckbox.closest('.personCard').querySelector('.bidBtn').dataset.runnerId } : null
+    };
+
+    // Update the runners' documents in Firestore
+    const db = firebase.firestore();
+    if (bets.vinnerGutt) {
+        db.collection('runners').doc(bets.vinnerGutt.runnerId).update({
+            winBets: firebase.firestore.FieldValue.arrayUnion(user.uid)
+        });
+    }
+    if (bets.vinnerJente) {
+        db.collection('runners').doc(bets.vinnerJente.runnerId).update({
+            winBets: firebase.firestore.FieldValue.arrayUnion(user.uid)
+        });
+    }
+    if (bets.spyr) {
+        db.collection('runners').doc(bets.spyr.runnerId).update({
+            pukeFirstBets: firebase.firestore.FieldValue.arrayUnion(user.uid)
+        });
+    }
+  
+    console.log(bets);
+  
+    const checkedOut = Array.from(document.querySelectorAll('input[name="box"]:checked'))
+      .map(box => box.value);
+  
+    if (!bets.vinnerGutt && !bets.vinnerJente && !bets.spyr) {
+      alert("Du må velge minst én kategori:)");
+      return;
+    }
+  
+    const betAmount = 30; 
+    const totalBetAmount = betAmount * Object.values(bets).filter(Boolean).length;
+  
+   
+    db.collection('beermilebet').add({
+      betterID: `${user.uid}`,
+      ...bets,
+      amount: totalBetAmount,
+    })
+    .then(() => {
+      alert(`All good! Husk å vippse ${totalBetAmount} kr.`);
+    })
+    .catch(error => {
+      console.error("Obs: ", error);
+    });
+  }
+
+
+  // function placeBet() {
 //     const user = firebase.auth().currentUser;
 
 //     if (!user) {
@@ -144,72 +205,3 @@ var bidBtns = document.querySelectorAll('.bidBtn');
 //         return;
 //     }
 // }
-
-
-function placeBet() {
-    const user = firebase.auth().currentUser;
-  
-    if (!user) {
-      alert("You must be logged in to place a bet.");
-      return;
-    }
-  
-    const winMaleCheckbox = document.querySelector('input[name="winMale"]:checked');
-    console.log('winMaleCheckbox:', winMaleCheckbox);
-  
-    const winFemaleCheckbox = document.querySelector('input[name="winFemale"]:checked');
-    console.log('winFemaleCheckbox:', winFemaleCheckbox);
-  
-    const pukeFirstCheckbox = document.querySelector('input[name="pukeFirst"]:checked');
-    console.log('pukeFirstCheckbox:', pukeFirstCheckbox);
-  
-    const bets = {
-      vinnerGutt: winMaleCheckbox ? { runnerId: winMaleCheckbox.closest('.personCard').querySelector('.bidBtn').dataset.runnerId } : null,
-      vinnerJente: winFemaleCheckbox ? { runnerId: winFemaleCheckbox.closest('.personCard').querySelector('.bidBtn').dataset.runnerId } : null,
-      spyr: pukeFirstCheckbox ? { runnerId: pukeFirstCheckbox.closest('.personCard').querySelector('.bidBtn').dataset.runnerId } : null
-    };
-
-    // Update the runners' documents in Firestore
-    const db = firebase.firestore();
-    if (bets.vinnerGutt) {
-        db.collection('runners').doc(bets.vinnerGutt.runnerId).update({
-            winBets: firebase.firestore.FieldValue.arrayUnion(user.uid)
-        });
-    }
-    if (bets.vinnerJente) {
-        db.collection('runners').doc(bets.vinnerJente.runnerId).update({
-            winBets: firebase.firestore.FieldValue.arrayUnion(user.uid)
-        });
-    }
-    if (bets.spyr) {
-        db.collection('runners').doc(bets.spyr.runnerId).update({
-            pukeFirstBets: firebase.firestore.FieldValue.arrayUnion(user.uid)
-        });
-    }
-  
-    console.log(bets);
-  
-    const checkedOut = Array.from(document.querySelectorAll('input[name="box"]:checked'))
-      .map(box => box.value);
-  
-    if (!bets.vinnerGutt && !bets.vinnerJente && !bets.spyr) {
-      alert("Du må velge minst én kategori:)");
-      return;
-    }
-  
-    const betAmount = 30; 
-    const totalBetAmount = betAmount * Object.values(bets).filter(Boolean).length;
-  
-   
-    db.collection('beermilebet').add({
-      betterID: `${user.uid}`,
-      ...bets,
-      amount: totalBetAmount,
-    })
-    .then(() => {
-      alert(`All good! Husk å vippse ${totalBetAmount} kr.`);
-    })
-    .catch(error => {
-      console.error("Obs: ", error);
-    });
-  }
