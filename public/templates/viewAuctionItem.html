@@ -115,7 +115,7 @@
                     userRef.get().then((userDoc) => {
                         if (userDoc.exists) {
                             const userData = userDoc.data();
-                            document.getElementById('currentBidder').textContent = "til " + userData.firstname + " " + userData.lastname;
+                            document.getElementById('currentBidder').textContent = "til " + userData.fornavn + " " + userData.etternavn;
                         } else {
                             console.log("No such user!");
                         }

@@ -118,7 +118,7 @@
             firebase.auth().signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
                 var user = userCredential.user;
-                window.location.href = "index.html"; 
+                window.location.href = "../index.html"; 
             })
             .catch((error) => {
                 var errorCode = error.code;
@@ -152,14 +152,14 @@
                 //     });
 
                 return db.collection("users").doc(user.uid).set({
-                    firstname,
-                    lastmame,
+                    fornavn: firstname,
+                    etternavn: lastmame,
                     email,
                     grade
                 });
             })
             .then(() => {
-                window.location.href = "index.html"; 
+                window.location.href = "../index.html"; 
             })
             .catch((error) => {
                 var errorCode = error.code;
