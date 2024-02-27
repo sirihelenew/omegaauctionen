@@ -49,8 +49,8 @@
           </form>
       
           <form id="register-form" style="display: none;">
-            <input type="text" id="fornavn" class="fadeIn third" placeholder="Fornavn">
-            <input type="text" id="etternavn" class="fadeIn third" placeholder="Etternavn">
+            <input type="text" id="firstname" class="fadeIn third" placeholder="firstname">
+            <input type="text" id="lastname" class="fadeIn third" placeholder="lastname">
             <input type="text" id="register-email" class="fadeIn second" placeholder="Epost">
             <input type="password" id="register-password" class="fadeIn third" placeholder="Passord">
             <br><br>
@@ -74,17 +74,18 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="../js/firebaseConfig.js"></script>
     <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
-            authDomain: "omegaauctionen.firebaseapp.com",
-            databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
-            projectId: "omegaauctionen",
-            storageBucket: "omegaauctionen.appspot.com",
-            messagingSenderId: "612432199946",
-            appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
-            measurementId: "G-NLP4T6TXHL"
-        };
+        // const firebaseConfig = {
+        //     apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
+        //     authDomain: "omegaauctionen.firebaseapp.com",
+        //     databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
+        //     projectId: "omegaauctionen",
+        //     storageBucket: "omegaauctionen.appspot.com",
+        //     messagingSenderId: "612432199946",
+        //     appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
+        //     measurementId: "G-NLP4T6TXHL"
+        // };
 
         firebase.initializeApp(firebaseConfig);
         var db = firebase.firestore();
@@ -129,8 +130,8 @@
 
         document.getElementById('register-form').addEventListener('submit', function(event) {
             event.preventDefault();
-            const firstname = document.getElementById('fornavn').value;
-            const lastname = document.getElementById('etternavn').value;
+            const firstname = document.getElementById('firstname').value;
+            const lastname = document.getElementById('lastname').value;
             const email = document.getElementById('register-email').value;
             const password = document.getElementById('register-password').value;
             const grade = document.getElementById('grade').value;
@@ -152,8 +153,8 @@
                 //     });
 
                 return db.collection("users").doc(user.uid).set({
-                    fornavn: firstname,
-                    etternavn: lastmame,
+                    firstname: firstname,
+                    lastname: lastname,
                     email,
                     grade
                 });

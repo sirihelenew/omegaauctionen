@@ -61,6 +61,10 @@
         }
 
         function renderAuctionCard(item) {
+            if (item.data().render === false) {
+                return;
+            }
+
             const container = document.getElementById("auctionContainer");
 
             const card = document.createElement("div");
@@ -103,6 +107,7 @@
             minBidTitle.textContent = "Minste bud";
             const minBidAmount = document.createElement("small");
             minBidAmount.textContent = item.data().startingPrice + " kr";
+
     
 
             // Append elements
@@ -113,17 +118,19 @@
             cardBody.appendChild(itemName);
             cardBody.appendChild(itemDescription);
 
+
             const usersRef = db.collection("users");
             usersRef.doc(currentBidderID.textContent).get().then((doc) => {
                 if (doc.exists) {
                     const currBidTitle = document.createElement("h5");
                     currBidTitle.textContent = "Høyeste bud";
-                    const firstname = doc.data().fornavn;
+                    const firstname = doc.data().firstname;
                     const bidderName = document.createElement("small");
-                    bidderName.textContent = doc.data().fornavn + " " + doc.data().etternavn;
+                    bidderName.textContent = doc.data().firstname + " " + doc.data().las;
                     cardBody.appendChild(currBidTitle);
                     cardBody.appendChild(bidderName);
                     cardBody.appendChild(currentPrice);
+                    console.log('Bidder name:', bidderName.textContent);
                 }
                 else {
                     cardBody.appendChild(minBid);
@@ -141,9 +148,13 @@
         // Fetch auction items from Firestore and render cards
         auctionItemsRef.get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                renderAuctionCard(doc);
+                if (doc.data().render !== false){
+                    renderAuctionCard(doc);
+                }
             });
         });
+
+
     </script>
 </body>
 </html>

@@ -41,7 +41,7 @@
                 usersList.innerHTML = ''; 
                 querySnapshot.forEach((doc) => {
                     const userData = doc.data();
-                    usersList.innerHTML += `<p>${userData.fornavn} ${userData.etternavn}</p>`;
+                    usersList.innerHTML += `<p>${userData.firstname} ${userData.lastname}</p>`;
                 });
             }).catch((error) => {
                 console.error("Error fetching users: ", error);

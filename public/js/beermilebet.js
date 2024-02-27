@@ -205,3 +205,44 @@ function placeBet() {
 //         return;
 //     }
 // }
+
+
+async function getWinningBettors() {
+  const db = firebase.firestore();
+  const runnersSnapshot = await db.collection('runners').get();
+  const bettorsSnapshot = await db.collection('beermilebet').get();
+
+  const winners = {
+      vinnerGutt: null,
+      vinnerJente: 'pP6ntvnF8DJHlHdovXNF',
+      spyr: 'aHr8FSIznn8vGMPHP0vM'
+  };
+
+  // Find the winners for each category
+  runnersSnapshot.forEach(doc => {
+      const runner = doc.data();
+      if (runner.winBets && runner.winBets.length > 0) {
+          winners.vinnerGutt = doc.id;
+      }
+      if (runner.winBets && runner.winBets.length > 0) {
+          winners.vinnerJente = doc.id;
+      }
+      if (runner.pukeFirstBets && runner.pukeFirstBets.length > 0) {
+          winners.spyr = doc.id;
+      }
+  });
+
+  const winningBettors = [];
+
+  // Find the bettors who betted on the winners
+  bettorsSnapshot.forEach(doc => {
+      const bettor = doc.data();
+      if ((bettor.vinnerGutt && bettor.vinnerGutt.runnerId === winners.vinnerGutt) ||
+          (bettor.vinnerJente && bettor.vinnerJente.runnerId === winners.vinnerJente) ||
+          (bettor.spyr && bettor.spyr.runnerId === winners.spyr)) {
+          winningBettors.push(bettor.betterID);
+      }
+  });
+
+  return winningBettors;
+}

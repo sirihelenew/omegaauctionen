@@ -31,6 +31,7 @@
             { label: "Jubcom synger på sillis", data: [30000, 30000] },
             { label: "Gratis kaffe ett år til", data: [40000, 40000] },
             { label: "Sport&Spill og PhaestCom har Oreo race", data: [45000, 45000] },
+            { label: "Kielder løper BeerMIL med Sport & Spill", data: [50000, 50000] },
             { label: "Marius tatoverer 105 års logoen", data: [60105, 60105] },
             { label: "HS spiller ludøl", data: [75000, 75000] },
         ];
@@ -117,6 +118,8 @@
         const db = firebase.firestore(app);
         const itemsRef = db.collection("auctionItems");
         const usersRef = db.collection("users");
+        const vandrebarRef = db.collection("vandrebar");
+
 
         itemsRef.onSnapshot(async () => {
             try {
@@ -125,7 +128,7 @@
                         if (auctionItemDoc.data().fixedPrice) {
                             for (const buyer of auctionItemDoc.data().buyers) {
                                 let user = await usersRef.doc(buyer).get();
-                                const fullName = `${user.data().fornavn} ${user.data().etternavn}`;
+                                const fullName = `${user.data().firstname} ${user.data().lastname}`;
 
                                 spenders[fullName] = (spenders[fullName] || 0) + auctionItemDoc.data().currentPrice;
                                 total += auctionItemDoc.data().currentPrice;
@@ -135,7 +138,7 @@
                             const userDoc = await usersRef.doc(auctionItemDoc.data().highestBidder).get();
 
                             if (userDoc.exists) {
-                                const fullName = `${userDoc.data().fornavn} ${userDoc.data().etternavn}`;
+                                const fullName = `${userDoc.data().firstname} ${userDoc.data().lastname}`;
 
                                 spenders[fullName] = (spenders[fullName] || 0) + auctionItemDoc.data().currentPrice;                                
                                 total += auctionItemDoc.data().currentPrice;
@@ -186,6 +189,10 @@
                     promises.push(updateData(doc));
                 });
                 await Promise.all(promises);
+
+                vandrebarDoc = await vandrebarRef.doc("vandrebarInntekt").get();
+                total += vandrebarDoc.data().totalSum;
+
                 getChartData();
                 
                 biggestSpenderChart.data.datasets[0].data = data;

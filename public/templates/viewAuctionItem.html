@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/css/viewAuctionItem.css"> 
 </head>
 <body>
-    <button id="backButton" onclick="location.href='/templates/auctionitems.html'">&#8592;</button>
+    <button id="backButton" onclick="location.href='auctionitems.html'">&#8592;</button>
     <div class="container">
         <div class="product"> 
             <div class="product-image">
@@ -32,6 +32,7 @@
             </div>
         </div>
     </div>
+
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
@@ -91,6 +92,25 @@
             auctionItemRef.get().then((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
+
+                    // Check if the render field is false
+                    if (data.render === false) {
+                        // Disable the bid and buy buttons
+                        document.getElementById('itemImage').src = data.imageURL;
+                        document.getElementById('submitBidButton').disabled = true;
+                        document.getElementById('buyNowButton').disabled = true;
+                        document.getElementById('submitBidButton').style.display = "none";
+                        document.getElementById('buyNowButton').style.display = "none";
+                        document.getElementById('bidForm').style.display = "none";
+                        
+
+                        // Display a message saying that the item is not biddable anymore
+                        const message = document.createElement('h4');
+                        message.textContent = "Dette objektet kan ikke lenger bys på.";
+                        document.querySelector('.product-details').appendChild(message);
+                        return;
+                    }
+                    
                     document.getElementById('currentBid').textContent = "Høyeste bud: " + data.currentPrice + " kr";
                     document.getElementById('itemName').textContent = data.itemName;
                     document.getElementById('itemDescription').textContent = data.description;
@@ -115,7 +135,7 @@
                     userRef.get().then((userDoc) => {
                         if (userDoc.exists) {
                             const userData = userDoc.data();
-                            document.getElementById('currentBidder').textContent = "til " + userData.fornavn + " " + userData.etternavn;
+                            document.getElementById('currentBidder').textContent = "til " + userData.firstname + " " + userData.lastname;
                         } else {
                             console.log("No such user!");
                         }
@@ -144,7 +164,7 @@
                 document.getElementById('submitBidButton').disabled = true;
                 document.getElementById('buyNowButton').disabled = true;
                 // Redirect to login page
-                window.location.href = 'users-test.html'; // Replace 'login.html' with your login page URL
+                window.location.href = 'login.html'; // Replace 'login.html' with your login page URL
             }
         });
 
@@ -160,7 +180,7 @@
                 }, 3000);
             } else {
                 // Redirect to login page
-                window.location.href = 'users-test.html'; // Replace 'users-test.html' with your login page URL
+                window.location.href = 'login.html'; // Replace 'users-test.html' with your login page URL
             }
         });
 
@@ -170,7 +190,7 @@
                 buyNow();
             } else {
                 // Redirect to login page
-                window.location.href = 'users-test.html'; // Replace 'users-test.html' with your login page URL
+                window.location.href = 'login.html'; // Replace 'users-test.html' with your login page URL
             }
         });
 
@@ -195,6 +215,11 @@
                 if (doc.exists) {
                     const data = doc.data();
                     const currentPrice = data.currentPrice;
+                    if (data.render === false) {
+                        const message = document.createElement('h4');
+                        message.textContent = "Dette objektet kan ikke bys på lenger.";
+                        return;
+                    }
                     if (currentBid > currentPrice) {
                         auctionItemRef.update({
                             currentPrice: currentBid,
@@ -245,6 +270,14 @@
             auctionItemRef.get().then((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
+                    if (data.render === false) {
+                        console.log("This item is not for sale anymore.");
+                        const message = document.createElement('h4');
+                        message.textContent = "Dette objektet er ikke tilgjengelig lenger.";
+                        return;
+                    }
+
+                    
                     if (data.buyers && data.buyers.includes(userId)) {
                         console.log("You have already bought this item.");
                         buyNowButton.innerText = "Allerede kjøpt";

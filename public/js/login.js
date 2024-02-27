@@ -42,8 +42,8 @@ document.getElementById('login-form').addEventListener('submit', function(event)
 
 document.getElementById('register-form').addEventListener('submit', function(event) {
     event.preventDefault();
-    const fornavn = document.getElementById('fornavn').value;
-    const etternavn = document.getElementById('etternavn').value;
+    const firstname = document.getElementById('firstname').value;
+    const lastname = document.getElementById('lastname').value;
     const email = document.getElementById('register-email').value;
     const password = document.getElementById('register-password').value;
 
@@ -52,8 +52,8 @@ document.getElementById('register-form').addEventListener('submit', function(eve
         const user = userCredential.user;
 
         return db.collection("users").doc(user.uid).set({
-            fornavn: fornavn,
-            etternavn: etternavn,
+            firstname: firstname,
+            lastname: lastname,
             email: email
         });
     })

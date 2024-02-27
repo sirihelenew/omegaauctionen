@@ -108,7 +108,8 @@
                             currentPrice: startingPrice,
                             highestBidder: "None",
                             liveAuction: liveAuctionCheck.checked,
-                            fixedPrice: fixedItemCheck.checked
+                            fixedPrice: fixedItemCheck.checked,
+                            render: true
                         });
                     })
                     .then((docRef) => {
@@ -132,7 +133,8 @@
                     currentPrice: startingPrice,
                     highestBidder: "None",
                     liveAuction: liveAuctionCheck.checked,
-                    fixedPrice: fixedItemCheck.checked
+                    fixedPrice: fixedItemCheck.checked,
+                    render: true
                 })
                 .then((docRef) => {
                     console.log("Document written with ID: ", docRef.id);
