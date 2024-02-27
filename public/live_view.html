@@ -33,6 +33,7 @@
             { label: "Sport&Spill og PhaestCom har Oreo race", data: [45000, 45000] },
             { label: "Marius tatoverer 105 års logoen", data: [60105, 60105] },
             { label: "HS spiller ludøl", data: [75000, 75000] },
+            { label: "Vi slår fjorårets inntekt!", data: [75798, 75798] },
         ];
     </script>
     <script>
@@ -117,6 +118,7 @@
         const db = firebase.firestore(app);
         const itemsRef = db.collection("auctionItems");
         const usersRef = db.collection("users");
+        const vandrebarRef = db.collection("vandrebar");
 
         itemsRef.onSnapshot(async () => {
             try {
@@ -186,6 +188,10 @@
                     promises.push(updateData(doc));
                 });
                 await Promise.all(promises);
+
+                vandrebarDoc = await vandrebarRef.doc("vandrebarInntekt").get();
+                total += vandrebarDoc.data().totalSum;
+                
                 getChartData();
                 
                 biggestSpenderChart.data.datasets[0].data = data;
@@ -208,10 +214,6 @@
             } catch (error) {
                 console.error("Error fetching data: ", error);
             }
-        });
-
-        document.addEventListener('DOMContentLoaded', async function() {
-            
         });
     </script>
 </body>
