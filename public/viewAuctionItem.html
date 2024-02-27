@@ -91,6 +91,25 @@
             auctionItemRef.get().then((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
+
+                    // Check if the render field is false
+                    if (data.render === false) {
+                        // Disable the bid and buy buttons
+                        document.getElementById('itemImage').src = data.imageURL;
+                        document.getElementById('submitBidButton').disabled = true;
+                        document.getElementById('buyNowButton').disabled = true;
+                        document.getElementById('submitBidButton').style.display = "none";
+                        document.getElementById('buyNowButton').style.display = "none";
+                        document.getElementById('bidForm').style.display = "none";
+                        
+
+                        // Display a message saying that the item is not biddable anymore
+                        const message = document.createElement('h4');
+                        message.textContent = "Dette objektet kan ikke lenger bys på.";
+                        document.querySelector('.product-details').appendChild(message);
+                        return;
+                    }
+                    
                     document.getElementById('currentBid').textContent = "Høyeste bud: " + data.currentPrice + " kr";
                     document.getElementById('itemName').textContent = data.itemName;
                     document.getElementById('itemDescription').textContent = data.description;
@@ -195,6 +214,11 @@
                 if (doc.exists) {
                     const data = doc.data();
                     const currentPrice = data.currentPrice;
+                    if (data.render === false) {
+                        const message = document.createElement('h4');
+                        message.textContent = "Dette objektet kan ikke bys på lenger.";
+                        return;
+                    }
                     if (currentBid > currentPrice) {
                         auctionItemRef.update({
                             currentPrice: currentBid,
@@ -245,6 +269,14 @@
             auctionItemRef.get().then((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
+                    if (data.render === false) {
+                        console.log("This item is not for sale anymore.");
+                        const message = document.createElement('h4');
+                        message.textContent = "Dette objektet er ikke tilgjengelig lenger.";
+                        return;
+                    }
+
+                    
                     if (data.buyers && data.buyers.includes(userId)) {
                         console.log("You have already bought this item.");
                         buyNowButton.innerText = "Allerede kjøpt";

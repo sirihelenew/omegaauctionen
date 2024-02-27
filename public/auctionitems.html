@@ -60,6 +60,11 @@
         }
 
         function renderAuctionCard(item) {
+
+             // If the render field is false, return immediately
+            if (item.data().render === false) {
+                return;
+            }
             const container = document.getElementById("auctionContainer");
 
             const card = document.createElement("div");
@@ -140,7 +145,9 @@
         // Fetch auction items from Firestore and render cards
         auctionItemsRef.get().then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                renderAuctionCard(doc);
+                if (doc.data().render !== false) {
+                    renderAuctionCard(doc);
+                }
             });
         });
     </script>
