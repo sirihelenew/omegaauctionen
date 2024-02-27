@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chart Display</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="nav">
+        <button onclick="displayPage('vinner')">Vinner</button>
+        <button onclick="displayPage('spy')">Spy</button>
+    </div>
+    <div id="chartContainer">
+        <canvas id="myChartWinBets"></canvas>
+        <canvas id="myChartPukeFirstBets"></canvas>
+    </div>
+    
+    <!-- <canvas id="myChart"></canvas>
+    <canvas id="myChartWinBets"></canvas>
+    <canvas id="myChartPukeFirstBets"></canvas> -->
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="../js/firebaseConfig.js"></script>
+    <!-- <script src="../js/votes.js"></script> -->
+    <script>
+    firebase.initializeApp(firebaseConfig);
+    function displayPage(page) {
+    if (page === 'vinner') {
+        document.getElementById('myChartPukeFirstBets').style.display = 'none';
+        document.getElementById('myChartWinBets').style.display = 'block';
+        getRunnerBets().then(({ topWinBets }) => {
+            displayWinBetsChart({ topWinBets });
+        });
+    } else if (page === 'spy') {
+        document.getElementById('myChartWinBets').style.display = 'none';
+        document.getElementById('myChartPukeFirstBets').style.display = 'block';
+        getRunnerBets().then(({ topPukeFirstBets }) => {
+            displayPukeFirstBetsChart({ topPukeFirstBets });
+        });
+    }
+}
+window.onload = function() {
+    displayPage('vinner'); // Display the "Vinner" page by default
+};
+
+
+function getRunnerBets() {
+    const db = firebase.firestore();
+    const runnersRef = db.collection('runners');
+    let runnerBets = [];
+
+    return runnersRef.get().then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+            const runner = doc.data();
+            const runnerId = doc.id;
+            const runnerName = runner.navn;
+            console.log(`${runnerName}: ${JSON.stringify(runner)}`);
+            const winBetsCount = runner.winBets ? runner.winBets.length : 0;
+            const pukeFirstBetsCount = runner.pukeFirstBets ? runner.pukeFirstBets.length : 0;
+
+            runnerBets.push({
+                runnerName: runnerName,
+                winBetsCount: winBetsCount,
+                pukeFirstBetsCount: pukeFirstBetsCount
+            });
+        });
+        console.log(runnerBets);
+        const topWinBets = [...runnerBets].sort((a, b) => b.winBetsCount - a.winBetsCount).slice(0, 10);
+        console.log(topWinBets);
+
+        // Sort runners by puke first bets and take top 5
+        const topPukeFirstBets = [...runnerBets].sort((a, b) => b.pukeFirstBetsCount - a.pukeFirstBetsCount).slice(0, 10);
+        console.log(topPukeFirstBets);
+        console.log({ topWinBets, topPukeFirstBets });
+        return { topWinBets, topPukeFirstBets };
+    });
+}
+
+function displayWinBetsChart({topWinBets}) {
+    const ctx = document.getElementById('myChartWinBets').getContext('2d');
+
+    // Create labels and data for win bets
+    const winBetsLabels = topWinBets.map(rb => rb.runnerName);
+    const winBetsData = topWinBets.map(rb => rb.winBetsCount);
+
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: winBetsLabels,
+            datasets: [{
+                label: 'Vinner',
+                data: winBetsData,
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+    });
+}
+
+function displayPukeFirstBetsChart({topPukeFirstBets}) {
+    const ctx = document.getElementById('myChartPukeFirstBets').getContext('2d');
+
+    // Create labels and data for puke first bets
+    const pukeFirstBetsLabels = topPukeFirstBets.map(rb => rb.runnerName);
+    const pukeFirstBetsData = topPukeFirstBets.map(rb => rb.pukeFirstBetsCount);
+
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: pukeFirstBetsLabels,
+            datasets: [{
+                label: 'Spydde først',
+                data: pukeFirstBetsData,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                    stepSize: 1
+                }
+                }
+            }
+        }
+    });
+}
+getRunnerBets().then(({ topWinBets, topPukeFirstBets }) => {
+    displayWinBetsChart({ topWinBets });
+    displayPukeFirstBetsChart({ topPukeFirstBets });
+    });
+</script>
+</body>
+</html>
