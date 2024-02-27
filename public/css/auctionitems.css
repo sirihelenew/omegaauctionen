@@ -73,6 +73,7 @@ h1 {
     flex-wrap: wrap;
     max-width: 1280px; /* Adjust this to fit your design */
     margin: auto;
+    margin-top: 50px;
 }
 
 .card {
