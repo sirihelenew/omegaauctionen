@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <link rel="stylesheet" type="text/css" href="/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet"> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/viewAuctionItem.css"> 
+    <link rel="stylesheet" href="/css/viewAuctionItem.css"> 
 </head>
 <body>
     <button id="backButton" onclick="location.href='auctionitems.html'">&#8592;</button>
@@ -38,20 +38,19 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
-    <script src="../js/firebaseConfig.js"></script>
-    
-        <!-- // Firebase configuration
-        // const firebaseConfig = {
-        //     apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
-        //     authDomain: "omegaauctionen.firebaseapp.com",
-        //     databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
-        //     projectId: "omegaauctionen",
-        //     storageBucket: "omegaauctionen.appspot.com",
-        //     messagingSenderId: "612432199946",
-        //     appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
-        //     measurementId: "G-NLP4T6TXHL"
-        // }; -->
-        <script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
+            authDomain: "omegaauctionen.firebaseapp.com",
+            databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
+            projectId: "omegaauctionen",
+            storageBucket: "omegaauctionen.appspot.com",
+            messagingSenderId: "612432199946",
+            appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
+            measurementId: "G-NLP4T6TXHL"
+        };
+
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
 
@@ -92,25 +91,6 @@
             auctionItemRef.get().then((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
-
-                    // Check if the render field is false
-                    if (data.render === false) {
-                        // Disable the bid and buy buttons
-                        document.getElementById('itemImage').src = data.imageURL;
-                        document.getElementById('submitBidButton').disabled = true;
-                        document.getElementById('buyNowButton').disabled = true;
-                        document.getElementById('submitBidButton').style.display = "none";
-                        document.getElementById('buyNowButton').style.display = "none";
-                        document.getElementById('bidForm').style.display = "none";
-                        
-
-                        // Display a message saying that the item is not biddable anymore
-                        const message = document.createElement('h4');
-                        message.textContent = "Dette objektet kan ikke lenger bys på.";
-                        document.querySelector('.product-details').appendChild(message);
-                        return;
-                    }
-                    
                     document.getElementById('currentBid').textContent = "Høyeste bud: " + data.currentPrice + " kr";
                     document.getElementById('itemName').textContent = data.itemName;
                     document.getElementById('itemDescription').textContent = data.description;
@@ -164,7 +144,7 @@
                 document.getElementById('submitBidButton').disabled = true;
                 document.getElementById('buyNowButton').disabled = true;
                 // Redirect to login page
-                window.location.href = 'login.html'; // Replace 'login.html' with your login page URL
+                window.location.href = 'users-test.html'; // Replace 'login.html' with your login page URL
             }
         });
 
@@ -180,7 +160,7 @@
                 }, 3000);
             } else {
                 // Redirect to login page
-                window.location.href = 'login.html'; // Replace 'users-test.html' with your login page URL
+                window.location.href = 'users-test.html'; // Replace 'users-test.html' with your login page URL
             }
         });
 
@@ -190,7 +170,7 @@
                 buyNow();
             } else {
                 // Redirect to login page
-                window.location.href = 'login.html'; // Replace 'users-test.html' with your login page URL
+                window.location.href = 'users-test.html'; // Replace 'users-test.html' with your login page URL
             }
         });
 
@@ -215,11 +195,6 @@
                 if (doc.exists) {
                     const data = doc.data();
                     const currentPrice = data.currentPrice;
-                    if (data.render === false) {
-                        const message = document.createElement('h4');
-                        message.textContent = "Dette objektet kan ikke bys på lenger.";
-                        return;
-                    }
                     if (currentBid > currentPrice) {
                         auctionItemRef.update({
                             currentPrice: currentBid,
@@ -270,14 +245,6 @@
             auctionItemRef.get().then((doc) => {
                 if (doc.exists) {
                     const data = doc.data();
-                    if (data.render === false) {
-                        console.log("This item is not for sale anymore.");
-                        const message = document.createElement('h4');
-                        message.textContent = "Dette objektet er ikke tilgjengelig lenger.";
-                        return;
-                    }
-
-                    
                     if (data.buyers && data.buyers.includes(userId)) {
                         console.log("You have already bought this item.");
                         buyNowButton.innerText = "Allerede kjøpt";
