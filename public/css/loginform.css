@@ -77,7 +77,27 @@ h1 {
   border-radius: 0 0 10px 10px;
 }
 
-
+label[for="grade"], #grade {
+  background-color: #f6f6f6;
+  border: none;
+  color: #333;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 5px;
+  width: 85%;
+  border: 2px solid #f6f6f6;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
 /* TABS */
 
@@ -96,7 +116,7 @@ h2.active {
 
 /* FORM TYPOGRAPHY*/
 
-input[type=button], input[type=submit], input[type=reset]  {
+input[type=button], input[type=submit], input[type=reset]{
   background-color: #e36a36;
   border: none;
   color: #f4f4f4;
@@ -106,10 +126,6 @@ input[type=button], input[type=submit], input[type=reset]  {
   display: inline-block;
   text-transform: uppercase;
   font-size: 13px;
-  /*-webkit-box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.25);
-  box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);*/
-  /*-webkit-box-shadow: 3px 4px rgba(0, 0, 0, 0.25);*/
-  /*box-shadow:  3px 4px rgba(0, 0, 0, 0.25);*/
   -webkit-border-radius: 5px 5px 5px 5px;
   border-radius: 5px 5px 5px 5px;
   margin: 5px 20px 40px 20px;

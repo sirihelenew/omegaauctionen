@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/wtf.css"> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <div class="chartGrid">
+        <h1>Omegaauctionen</h1>
+    
+        <canvas id="biggestSpenderChart" class="doughnut"></canvas>
+        <canvas id="classSpendageChart" class="doughnut"></canvas>
+        <canvas id="stretchGoalChart" class="line"></canvas>
+    </div>
+
+    <script>
+        const stretchGoals = [
+            {
+                label: 'Innsamlet',
+                data: [0, 0],
+                borderWidth: 1,
+                fill: true,
+            },
+            { label: "Icerace med Soscom og Blaestcom", data: [25000, 25000] },
+            { label: "Jubcom synger på sillis", data: [30000, 30000] },
+            { label: "Gratis kaffe ett år til", data: [40000, 40000] },
+            { label: "Sport&Spill og PhaestCom har Oreo race", data: [45000, 45000] },
+            { label: "Marius tatoverer 105 års logoen", data: [60105, 60105] },
+            { label: "HS spiller ludøl", data: [75000, 75000] },
+        ];
+    </script>
+    <script>
+        // MASSIVE credits to haakonbae: 
+        // https://github.com/haakonbaa
+        const biggestSpenderChart = new Chart("biggestSpenderChart", {
+            type: "doughnut",
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Biggest spenders',
+                    data: [],
+                    hoverOffset: 4,
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(211, 92, 229)',
+                        'rgb(54, 162, 235)',
+                        'rgb(75, 192, 192)',
+                        'rgb(255, 205, 86)',
+                        'rgb(201, 203, 207)',
+                    ],
+                }]
+            },
+            options: {}
+        });
+
+        const classSpendageChart = new Chart("classSpendageChart", {
+            type: "doughnut",
+            data: {
+                labels: [
+                    'First',
+                    'Second',
+                    'Third',
+                    'Fourth',
+                    'Fifth',
+                    'other',
+                ],
+                datasets: [{
+                    label: 'Money spent by class',
+                    data: [0, 0, 0, 0, 0, 0],
+                    hoverOffset: 4,
+                }]
+            },
+            options: {}
+        });
+
+        const stretchGoalChart = new Chart('stretchGoalChart', {
+            type: "line",
+            data: {
+                labels: ["", ""],
+                datasets: stretchGoals,
+            },
+            options: {
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        display: true,
+                        min: 0,
+                        max: 100000,
+                    },
+                    y: {
+                        beginAtZero: true,
+                    }
+                }
+            },
+        });
+    </script>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
+            authDomain: "omegaauctionen.firebaseapp.com",
+            databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
+            projectId: "omegaauctionen",
+            storageBucket: "omegaauctionen.appspot.com",
+            messagingSenderId: "612432199946",
+            appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
+            measurementId: "G-NLP4T6TXHL"
+        };
+        
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore(app);
+        const itemsRef = db.collection("auctionItems");
+        const usersRef = db.collection("users");
+
+        itemsRef.onSnapshot(async () => {
+            try {
+                const updateData = async (auctionItemDoc) => {
+                    try {
+                        if (auctionItemDoc.data().fixedPrice) {
+                            for (const buyer of auctionItemDoc.data().buyers) {
+                                let user = await usersRef.doc(buyer).get();
+                                const fullName = `${user.data().firstname} ${user.data().lastname}`;
+
+                                spenders[fullName] = (spenders[fullName] || 0) + auctionItemDoc.data().currentPrice;
+                                total += auctionItemDoc.data().currentPrice;
+                                classSpendages[user.data().grade] += auctionItemDoc.data().currentPrice;
+                            }
+                        } else {
+                            const userDoc = await usersRef.doc(auctionItemDoc.data().highestBidder).get();
+
+                            if (userDoc.exists) {
+                                const fullName = `${userDoc.data().firstname} ${userDoc.data().lastname}`;
+
+                                spenders[fullName] = (spenders[fullName] || 0) + auctionItemDoc.data().currentPrice;                                
+                                total += auctionItemDoc.data().currentPrice;
+                                classSpendages[userDoc.data().grade] += auctionItemDoc.data().currentPrice;
+                            } else {
+                                console.log("Buyer not found. Most likely no one has placed a bid on this item yet.");
+                            } 
+                        }
+                    } catch (error) {
+                        console.error("Error updating data: ", error);
+                    }
+                };
+
+                const getChartData = async () => {
+                    let entries = Object
+                        .entries(spenders)                
+                        .map((val, _i, _arr) => { return [val[0], Number(val[1])]; })
+                        .sort((a, b) => { return b[1] - a[1]; });
+
+                    data[5] = 0;
+                    entries.forEach((entry, index, _arr) => {
+                        if (index < 5) {
+                            data[index] = entry[1];
+                            labels[index] = entry[0];
+                        } else {
+                            data[5] += entry[1];
+                            labels[5] = 'other';
+                        }
+                    });
+                };
+
+                let total = 0;
+                let data = [];
+                let labels = [];
+                let spenders = {}
+                const classSpendages = {
+                    "first": 0,
+                    "second": 0,
+                    "third": 0,
+                    "fourth": 0,
+                    "fifth": 0,
+                    "other":0,
+                };
+
+                const querySnapshot = await itemsRef.get();
+                const promises = [];
+                querySnapshot.forEach((doc) => {
+                    promises.push(updateData(doc));
+                });
+                await Promise.all(promises);
+                getChartData();
+                
+                biggestSpenderChart.data.datasets[0].data = data;
+                // biggestSpenderChart.data.datasets[0].backgroundColor = colors;
+                biggestSpenderChart.data.labels = labels;
+                biggestSpenderChart.update();
+
+                classSpendageChart.data.datasets[0].data = [
+                    classSpendages.first,
+                    classSpendages.second,
+                    classSpendages.third,
+                    classSpendages.fourth,
+                    classSpendages.fifth,
+                    classSpendages.other,
+                ]
+                classSpendageChart.update();
+
+                stretchGoalChart.data.datasets[0].data = [total, total];
+                stretchGoalChart.update();
+            } catch (error) {
+                console.error("Error fetching data: ", error);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            
+        });
+    </script>
+</body>
+</html>

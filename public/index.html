@@ -157,13 +157,13 @@
   <article class="article">
     <div class="grid__item--1of1 text-center">
       <div class="tabs">
-          <input type="radio" name="tabs" id="tab1">
+          <input type="radio" name="tabs" id="tab1" onclick="redirectToAuctionItems()">
           <label for="tab1">
               <i class="fa-solid fa-gavel icon"></i><span>Auksjonsobjekter</span>
           </label>
           <input type="radio" name="tabs" id="tab2">
           <label for="tab2">
-            <i class="fa-solid fa-person-running icon"></i><span>Beermile</span>
+              <i class="fa-solid fa-bars-progress icon"></i><span>Visualisering</span>
           </label>
           <input type="radio" name="tabs" id="tab3">
           <label for="tab3">
@@ -193,27 +193,7 @@
               <!-- <button class="header-button" style="background-color: var(--deeppink); font-size: 20px; font-weight: bold;"><a href="https://forms.gle/bUr6xxT1S7finWZb9" style="color: var(--hvit);">Vil du auksjonere bort noe?</a></button> -->
           </div>
           <div id="tab__content--2" class="tab__content">
-            <h3 style="color: var(--bebirosa);">Beermile-betting åpner senere!</h3>
-            <button class="header-button" style="background-color: var(--deeppink); font-size: 20px; font-weight: bold; text-decoration: none;"><a href="#" style="color: var(--hvit); text-decoration: none;">Betting</a></button>
-
-            <!--<button class="header-button" style="background-color: var(--deeppink); font-size: 20px; font-weight: bold; text-decoration: none;"><a href="templates/beermile.html" style="color: var(--hvit); text-decoration: none;">Betting</a></button>-->
-            
-            
-            <!-- <p style="font-style: italic; font-size: 20px;">inkluderer blant annet..</p>
-            <p><span style="font-weight: bold;">75.798kr:</span> Vi har slått fjorårets sum!</p>
-            <div class="progress-bar">
-                <div class="progress-bar-fill" style="width: 80%;"></div>
-            </div>
-            <p><span style="font-weight: bold;">50.000kr:</span> Kielder blir med Sport & Spill og løper den årlige Beer<span style="font-weight: bold;">MIL</span>en.</p>
-            <div class="progress-bar">
-                <div class="progress-bar-fill" style="width: 55%;">
-                </div>
-            </div>
-            <p><span style="font-weight: bold;">40.000kr:</span> Et år til med gratis kaffe på Loftet.</p>
-            <div class="progress-bar">
-              <div class="progress-bar-fill" style="width: 45%;"></div>
-            </div> -->
-          </div>
+              <button class="header-button" style="background-color: #A6D1E6;"><a href="live_view.html" style="color: #333;">Visualisering :3</a></button>
           <div id="tab__content--3" class="tab__content">
               <h3 style="color: var(--bebirosa);">Dagens aktiviteter</h3>
               <p style="text-align: left;">Som alltid er OmegaAuctionen en fest i seg selv, med stretchgoals som gjennomføres og masse kule auksjonsobjekter til salgs!</p>
@@ -386,5 +366,134 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="js/firebaseConfig.js"></script>
   <!-------------------------------------------------------------------------------->
-  <script src="js/homepage.js"></script>
-  <!--<script src="js/brukerinfo.js"></script>-->
+  <script>
+
+  function redirectToAuctionItems() {
+      window.location.href = "/auctionitems.html";
+  }
+ firebaseConfig = {
+            apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
+            authDomain: "omegaauctionen.firebaseapp.com",
+            databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
+            projectId: "omegaauctionen",
+            storageBucket: "omegaauctionen.appspot.com",
+            messagingSenderId: "612432199946",
+            appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
+            measurementId: "G-NLP4T6TXHL"
+        };
+    firebase.initializeApp(firebaseConfig);
+
+const auth = firebase.auth();
+
+auth.onAuthStateChanged((user) => {
+    console.log(user)
+    if (user) {
+        console.log('User is logged in');
+    } else {
+        console.log('User is not logged in');
+    }
+});
+
+function showContent(activeTabId, user) {
+    document.querySelectorAll('.tab__content').forEach(function(content) {
+        content.style.display = 'none';
+    });
+    //hvis bruker er logget inn, vis innhold
+    if (user) {
+        document.getElementById(activeTabId).style.display = 'block';
+        document.getElementById('login-message').style.display = 'none';
+    } else {
+        //ikke vis login-melding for tab4
+        if (activeTabId === 'tab__content--4' || activeTabId === 'tab__content--2') {
+            document.getElementById('login-message').style.display = 'none';
+            document.getElementById(activeTabId).style.display = 'block';
+        } else {
+            //hvis bruker ikke er logget inn
+            document.getElementById('login-message').style.display = 'block';
+            document.getElementById(activeTabId).style.display = 'none';
+        }
+        //document.getElementById('login-message').style.display = 'block';
+        //document.getElementById(activeTabId).style.display = 'none';
+    }
+}
+/*midlertidig løsning for tab4*/
+function showContent_Tab4(activeTabId) {
+    document.querySelectorAll('.tab__content').forEach(function(content) {
+        content.style.display = 'none';
+    });
+    document.getElementById('login-message').style.display = 'none';
+    var content = document.querySelector('.veldedighetsinformasjon');
+    if (content) {
+        content.style.display = 'none';
+    }
+    document.getElementById(activeTabId).style.display = 'block';
+}
+
+function clickTab(user){
+    document.querySelector('#tab1').addEventListener('click', function() {
+        showContent('tab__content--1', user);
+    });
+    document.querySelector('#tab2').addEventListener('click', function() {
+        showContent('tab__content--2', user);
+    });
+    document.querySelector('#tab3').addEventListener('click', function() {
+        showContent('tab__content--3', user);
+    });
+    document.querySelector('#tab4').addEventListener('click', function() {
+        showContent_Tab4('tab__content--4', user);
+    });
+}
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    firebase.auth().onAuthStateChanged(function(user) {
+      const minBruker = document.querySelector('.minBruker-knapp');
+            
+        if (user) {
+          clickTab(user);
+          minBruker.style.display = 'block';
+          document.querySelector('.minBruker-knapp').addEventListener('click', function(e) {
+            e.preventDefault();
+              document.querySelector('.hamburger-menu').style.width = '250px';
+            });
+                
+            } else {
+                clickTab();
+                minBruker.style.display = 'none';  
+        }});
+    });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelector('.dropbtn').addEventListener('click', function() {
+      var dropdownContent = document.querySelector('.dropdown-content');
+      if (dropdownContent.style.display === 'none' || dropdownContent.style.display === '') {
+          dropdownContent.style.display = 'block';
+      } else {
+          dropdownContent.style.display = 'none';
+      }
+  });
+
+  document.querySelector('.close-btn').addEventListener('click', function(e) {
+          e.preventDefault();
+          document.querySelector('.hamburger-menu').style.width = '0';
+        });
+  /*document.querySelector('.minBruker-knapp').addEventListener('click', function() {
+      var brukerinfo = document.querySelector('.brukerinfo');
+      if (brukerinfo.style.display === 'none' || brukerinfo.style.display === '') {
+        brukerinfo.style.display = 'block';
+      } else {
+        brukerinfo.style.display = 'none';
+      }
+  });*/
+
+  document.getElementById('logoutButton').addEventListener('click', function() {
+    firebase.auth().signOut().then(function() {
+        console.log('User Logged Out!');
+        document.querySelector('.hamburger-menu').style.width = '0';
+        window.location.href = "index.html";
+    }).catch(function(error) {
+        console.error('Sign Out Error', error);
+    });
+});
+});
+</script>
