@@ -87,7 +87,25 @@
       text-align: center;
       text-transform: uppercase;
       font-family: 'Roboto', sans-serif;
-    }    
+    }   
+    /* #cardContainer  {
+      height: 200px;
+      width: 100%;
+      overflow-y: auto;
+      color: var(--hvit);
+      background-color: var(--jub-lilla);
+    } */
+    #activeBids {
+  width: 90%;
+  max-width: 600px;
+  background-color: var(--hvit) !important;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  color: var(--grå) !important;
+}
 </style>
 </head>
 <body>
@@ -97,9 +115,13 @@
       <a href="#" class="minBruker-knapp"><i class="fa-solid fa-user"></i> Min bruker</a>
       <div class="hamburger-menu">
         <button class="close-btn"><i class="fa-solid fa-angle-left"></i> Tilbake</button>
-        <!--<a href="#"><i class="fa-solid fa-heart"></i> Mine favoritter</a>
-        <a href="test.html"><i class="fa-solid fa-gavel"></i> Mine bud</a>
-        <a href="#"><i class="fa-solid fa-heart"></i> Mine favoritter</a>-->
+        <!--<a href="#"><i class="fa-solid fa-heart"></i> Mine favoritter</a>-->
+        <!-- <a href="test.html" id="myBidsLink"><i class="fa-solid fa-gavel"></i> Mine bud</a> -->
+        <!-- <div id="cardContainer"></div> -->
+        <!--<button id="myBidsButton">Mine bud</button>-->
+        <a href="javascript:void(0);" id="myBidsButton"><i class="fa-solid fa-gavel"></i> Mine bud</a>
+        <div id="cardContainer"></div>
+        <!--<a href="#"><i class="fa-solid fa-heart"></i> Mine favoritter</a>-->
         <a href="#" id="logoutButton"><i class="fa-solid fa-right-from-bracket"></i> Logg ut</a>
       </div>
       <li class="dropdown">
@@ -356,6 +378,8 @@
 <!-------------------------------------------------------------------------------->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="js/firebaseConfig.js"></script>
   <!-------------------------------------------------------------------------------->
   <script src="js/homepage.js"></script>
+  <!--<script src="js/brukerinfo.js"></script>-->

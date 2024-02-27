@@ -1,43 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet"> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/auctionitems.css"> 
+    <link rel="stylesheet" href="../css/viewAuctionItem.css"> 
 </head>
 <body>
-    <div class="header">
-        <h1>T</h1>
-        <p id="currentBid">Current bid: </p>
-        <form>
-            <input type="number" name="currentBid" placeholder="0 kr">
-            <button type="submit" id="submitBidButton">Legg til bud</button>
-        </form>
+    <button id="backButton" onclick="location.href='auctionitems.html'">&#8592;</button>
+    <div class="container">
+        <div class="product"> 
+            <div class="product-image">
+                <img id="itemImage">
+            </div>
+            <div class="product-details">
+                <h1 id="itemName"></h1>
+                <p id="itemDescription"></p>
+                <br>
+                <form id="bidForm">
+                    <p id="currentBid"></p>
+                    <p id="currentBidder"> av </p>
+                    <input type="number" name="currentBid" placeholder="0 kr">
+                    <button type="submit" id="submitBidButton">Legg til bud</button>
+                </form>
+                <h3 id="liveAuctionMessage" style="display: none;">Dette objektet auksjoneres live.</h3>
+                <h4 id="fixedItemMessage" style="display: none;">Dette objektet selges til fast pris.</h4><br>
+                <p id="fixedItemPrice" style="display: none;"></p><br>
+                <button id="buyNowButton" style="display: none;">Kjøp nå</button>
+            </div>
+        </div>
     </div>
-
-
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 
-    <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
-            authDomain: "omegaauctionen.firebaseapp.com",
-            databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
-            projectId: "omegaauctionen",
-            storageBucket: "omegaauctionen.appspot.com",
-            messagingSenderId: "612432199946",
-            appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
-            measurementId: "G-NLP4T6TXHL"
-        };
+    <script src="../js/firebaseConfig.js"></script>
 
+        <!-- // Firebase configuration
+        // const firebaseConfig = {
+        //     apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
+        //     authDomain: "omegaauctionen.firebaseapp.com",
+        //     databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
+        //     projectId: "omegaauctionen",
+        //     storageBucket: "omegaauctionen.appspot.com",
+        //     messagingSenderId: "612432199946",
+        //     appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
+        //     measurementId: "G-NLP4T6TXHL"
+        // }; -->
+        <script>
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
 
@@ -47,13 +61,21 @@
         const app = firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore(app);
         const auctionItemsRef = db.collection("auctionItems");
-
-        const getCurrentBid = () => {
+        
+        // Function to check if the user has already bought the item
+        function checkIfBought() {
+            const user = firebase.auth().currentUser;
+            const userId = user.uid;
             const auctionItemRef = auctionItemsRef.doc(itemId);
+            const buyNowButton = document.getElementById('buyNowButton');
+
             auctionItemRef.get().then((doc) => {
                 if (doc.exists) {
-                    const currentBidElement = document.getElementById('currentBid');
-                    currentBidElement.textContent = "Current bid: " + doc.data().currentPrice; + " kr";
+                    const data = doc.data();
+                    if (data.buyers && data.buyers.includes(userId)) {
+                        buyNowButton.innerText = "Allerede kjøpt";
+                        buyNowButton.disabled = true;
+                    }
                 } else {
                     console.log("No such document!");
                 }
@@ -61,15 +83,114 @@
                 console.error("Error getting document:", error);
             });
         }
-        getCurrentBid();
+
+        // Run the check when the page is loaded
+        window.onload = checkIfBought;
+
+        function getItemData() {
+            const auctionItemRef = auctionItemsRef.doc(itemId);
+            auctionItemRef.get().then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+
+                    // Check if the render field is false
+                    if (data.render === false) {
+                        // Disable the bid and buy buttons
+                        document.getElementById('itemImage').src = data.imageURL;
+                        document.getElementById('submitBidButton').disabled = true;
+                        document.getElementById('buyNowButton').disabled = true;
+                        document.getElementById('submitBidButton').style.display = "none";
+                        document.getElementById('buyNowButton').style.display = "none";
+                        document.getElementById('bidForm').style.display = "none";
+                        
+
+                        // Display a message saying that the item is not biddable anymore
+                        const message = document.createElement('h4');
+                        message.textContent = "Dette objektet kan ikke lenger bys på.";
+                        document.querySelector('.product-details').appendChild(message);
+                        return;
+                    }
+                    
+                    document.getElementById('currentBid').textContent = "Høyeste bud: " + data.currentPrice + " kr";
+                    document.getElementById('itemName').textContent = data.itemName;
+                    document.getElementById('itemDescription').textContent = data.description;
+                    document.getElementById('itemImage').src = data.imageURL;
+                    document.getElementById('fixedItemPrice').textContent = "Pris: " + data.currentPrice + " kr";
+
+                    if(data.liveAuction) {
+                        document.getElementById('bidForm').style.display = "none";
+                        document.getElementById('liveAuctionMessage').style.display = "block";
+                    }
+
+                    if(data.fixedPrice) {
+                        document.getElementById('bidForm').style.display = "none";
+                        document.getElementById('buyNowButton').style.display = "block";
+                        document.getElementById('fixedItemPrice').style.display = "block";
+                        document.getElementById('fixedItemMessage').style.display = "block";
+                    }
+                    
+                    // Get the highest bidder's name
+                    const highestBidderId = data.highestBidder;
+                    const userRef = db.collection("users").doc(highestBidderId);
+                    userRef.get().then((userDoc) => {
+                        if (userDoc.exists) {
+                            const userData = userDoc.data();
+                            document.getElementById('currentBidder').textContent = "til " + userData.firstname + " " + userData.lastname;
+                        } else {
+                            console.log("No such user!");
+                        }
+                    }).catch((error) => {
+                        console.error("Error getting user:", error);
+                    });
+                } else {
+                    console.log("No such document!");
+                }
+            }).catch((error) => {
+                console.error("Error getting document:", error);
+            });
+        }
+
+        getItemData();
 
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
-            // User is signed in
-            console.log("User is logged in:", user);
+                // User is signed in
+                console.log("User is logged in:", user);
+                document.getElementById('submitBidButton').disabled = false;
+                document.getElementById('buyNowButton').disabled = false;
             } else {
-            // No user is signed in
-            console.log("User is not logged in.");
+                // No user is signed in
+                console.log("User is not logged in.");
+                document.getElementById('submitBidButton').disabled = true;
+                document.getElementById('buyNowButton').disabled = true;
+                // Redirect to login page
+                window.location.href = 'login.html'; // Replace 'login.html' with your login page URL
+            }
+        });
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const user = firebase.auth().currentUser;
+            if (user) {
+                updateBid();
+                const submitButton = document.getElementById('submitBidButton');
+                submitButton.innerText = "Bud lagt til!";
+                setTimeout(function() {
+                    submitButton.innerText = "Legg til bud";
+                }, 3000);
+            } else {
+                // Redirect to login page
+                window.location.href = 'login.html'; // Replace 'users-test.html' with your login page URL
+            }
+        });
+
+        document.getElementById('buyNowButton').addEventListener('click', function() {
+            const user = firebase.auth().currentUser;
+            if (user) {
+                buyNow();
+            } else {
+                // Redirect to login page
+                window.location.href = 'login.html'; // Replace 'users-test.html' with your login page URL
             }
         });
 
@@ -94,13 +215,18 @@
                 if (doc.exists) {
                     const data = doc.data();
                     const currentPrice = data.currentPrice;
-                    console.log("Current price:", currentPrice);
+                    if (data.render === false) {
+                        const message = document.createElement('h4');
+                        message.textContent = "Dette objektet kan ikke bys på lenger.";
+                        return;
+                    }
                     if (currentBid > currentPrice) {
                         auctionItemRef.update({
                             currentPrice: currentBid,
                             highestBidder: userId
                         }).then(() => {
                             console.log("Document successfully updated!");
+                            getItemData();
                             userRef.update({
                                 currentBids: firebase.firestore.FieldValue.arrayUnion(itemId)
                             }).then(() => {
@@ -125,10 +251,67 @@
         document.querySelector('form').addEventListener('submit', function(event) {
             event.preventDefault();
             updateBid();
+            const submitButton = document.getElementById('submitBidButton');
+            submitButton.innerText = "Bud lagt til!";
+            setTimeout(function() {
+                submitButton.innerText = "Legg til bud";
+            }, 3000);
         });
 
+        function buyNow() {
+            const user = firebase.auth().currentUser;
+            const userId = user.uid;
+            const auctionItemRef = auctionItemsRef.doc(itemId);
+            const buyNowButton = document.getElementById('buyNowButton');
+            buyNowButton.disabled = true;
+            buyNowButton.innerText = "Behandler...";
 
-        
+            // Check if the current user has already bought this item
+            auctionItemRef.get().then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.render === false) {
+                        console.log("This item is not for sale anymore.");
+                        const message = document.createElement('h4');
+                        message.textContent = "Dette objektet er ikke tilgjengelig lenger.";
+                        return;
+                    }
+
+                    
+                    if (data.buyers && data.buyers.includes(userId)) {
+                        console.log("You have already bought this item.");
+                        buyNowButton.innerText = "Allerede kjøpt";
+                        return;
+                    }
+
+                    // If the current user hasn't bought the item, allow them to buy it
+                    auctionItemRef.update({
+                        buyers: firebase.firestore.FieldValue.arrayUnion(userId) // Add the user to the buyers list
+                    }).then(() => {
+                        console.log("Document successfully updated!");
+                        buyNowButton.innerText = "Kjøpt!";
+                        setTimeout(function() {
+                            buyNowButton.innerText = "Allerede kjøpt";
+                        }, 3000);
+                    }).catch((error) => {
+                        console.error("Error updating document: ", error);
+                        buyNowButton.innerText = "Kjøp nå";
+                        buyNowButton.disabled = false;
+                    });
+                } else {
+                    console.log("No such document!");
+                    buyNowButton.innerText = "Kjøp nå";
+                    buyNowButton.disabled = false;
+                }
+            }).catch((error) => {
+                console.error("Error getting document:", error);
+                buyNowButton.innerText = "Kjøp nå";
+                buyNowButton.disabled = false;
+            });
+        }
+                 
+        document.getElementById('buyNowButton').addEventListener('click', buyNow);
+
     </script>
 </body>
 </html>

@@ -16,31 +16,41 @@
           <h1>REGISTRER NYTT OBJEKT</h1> 
           <!-- Login Form -->
           <form>
-            <input type="text" name="itemName" placeholder="Navn på objekt">
+            <input type="text" name="itemName" placeholder="Navn på objekt" >
             <textarea type="text" name="description" placeholder="Beskrivelse av objekt"></textarea>
             <input type="number" name="startingPrice" placeholder="Minimum pris">
-            <input type="file" name="picture" accept="image/*">
-            <button type="submit" id="submitButton">Legg til objekt</button>
+            <input type="file" name="picture" accept="image/*"><br><br>
+            <input type="checkbox" id="liveAuctionCheck" name="liveAuctionCheck" value="liveAuctionCheck">
+            <label for="liveAuctionCheck"> Auksjonsobjektet skal auksjoneres live </label><br><br>
+            <input type="checkbox" id="fixedItemCheck" name="fixedItemCheck" value="fixedItemCheck">
+            <label for="fixedItemCheck"> Selges til fast pris (flere kan kjøpe samme objekt) </label><br><br>
+            <button type="submit" id="submitButton">
+                Legg til objekt
+                <div id="spinner" style="display: none;">
+                    <div></div><div></div><div></div><div></div>
+                </div>
+            </button>
           </form>
         </div>
-      </div>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    <script src="../js/firebaseConfig.js"></script>
     <script>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
-            authDomain: "omegaauctionen.firebaseapp.com",
-            databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
-            projectId: "omegaauctionen",
-            storageBucket: "omegaauctionen.appspot.com",
-            messagingSenderId: "612432199946",
-            appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
-            measurementId: "G-NLP4T6TXHL"
-        };
+        // const firebaseConfig = {
+        //     apiKey: "AIzaSyDC_yGwhnlgbRTLdvvSJkNi-FGFZgzUKuk",
+        //     authDomain: "omegaauctionen.firebaseapp.com",
+        //     databaseURL: "https://omegaauctionen-default-rtdb.firebaseio.com",
+        //     projectId: "omegaauctionen",
+        //     storageBucket: "omegaauctionen.appspot.com",
+        //     messagingSenderId: "612432199946",
+        //     appId: "1:612432199946:web:8475ac11c820c11d5c3af3",
+        //     measurementId: "G-NLP4T6TXHL"
+        // };
 
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
@@ -59,12 +69,23 @@
 
             const itemName = document.querySelector('input[name="itemName"]').value;
             const description = document.querySelector('textarea[name="description"]').value;
-            const startingPrice = parseFloat(document.querySelector('input[name="startingPrice"]').value);
+            const startingPriceInput = document.querySelector('input[name="startingPrice"]').value;
+            const startingPrice = parseFloat(startingPriceInput) || 0;
             const picture = document.querySelector('input[name="picture"]').files[0];
             const submitButton = document.getElementById('submitButton');
+            const spinner = document.getElementById('spinner');
+            let liveAuctionCheck = document.getElementById("liveAuctionCheck");
+            let fixedItemCheck = document.getElementById("fixedItemCheck");
+
+            // Form validation
+            if (!itemName.trim()) {
+                alert('Please fill out the name field.');
+                return;
+            }
 
             submitButton.disabled = true;
-            submitButton.classList.add('button-disabled');
+            submitButton.style.backgroundColor = '#aaa'; // Change button color
+            spinner.style.display = 'inline-block'; // Show spinner
 
             let imageURL = '';
 
@@ -78,15 +99,17 @@
                         return snapshot.ref.getDownloadURL(); // Get URL of uploaded file
                     })
                     .then((downloadURL) => {
-                        imageURL = downloadURL; // Save the URL of the uploaded picture
-                        // Save form data including picture URL to Firestore
+                        imageURL = downloadURL;
                         return db.collection("auctionItems").add({
                             itemName,
                             description,
                             startingPrice,
-                            imageURL, // Save the URL to imageURL attribute
+                            imageURL,
                             currentPrice: startingPrice,
-                            highestBidder: "None"
+                            highestBidder: "None",
+                            liveAuction: liveAuctionCheck.checked,
+                            fixedPrice: fixedItemCheck.checked,
+                            render: true
                         });
                     })
                     .then((docRef) => {
@@ -108,7 +131,10 @@
                     startingPrice,
                     imageURL,
                     currentPrice: startingPrice,
-                    highestBidder: "None"
+                    highestBidder: "None",
+                    liveAuction: liveAuctionCheck.checked,
+                    fixedPrice: fixedItemCheck.checked,
+                    render: true
                 })
                 .then((docRef) => {
                     console.log("Document written with ID: ", docRef.id);
